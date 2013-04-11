@@ -45,7 +45,7 @@ Nie usuwajcie tej funkcji, bo kompilator będzie krzyczał.
 
 
 OBRAZ Z KAMERY
-jeżeli obraz będzie odwrócony, należy zakomentować linię: cv::flip(mat, mat, 0)w pliku mainwindow.cpp
+jeżeli obraz będzie odwrócony, należy zakomentować linię: cv::flip(mat, mat, 0)
 
 
 Jak by co, to dzwońcie albo piszcie, to będziemy kombinować.

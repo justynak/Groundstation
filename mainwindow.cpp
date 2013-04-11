@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ////    IP CAM
     ////////  ZAMIAST 0 -> const std::string videoStreamAddress = "http://<username:password>@<ip_address>/video.cgi?.mjpg"; //czy w tym stylu
-
     cam.open(0);
+    //////////////////////////////////
 
     t=new QTimer();
     t->start(50);

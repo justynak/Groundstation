@@ -50,9 +50,10 @@ RESOURCES += src.qrc
 
 
 LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/qt4/plugins/designer/ -lqledplugin
-
 INCLUDEPATH += $$PWD/../../../../usr/lib/qt4/examples/designer/qledplugin
 DEPENDPATH += $$PWD/../../../../usr/lib/qt4/examples/designer/qledplugin
-
-LIBS +=  `pkg-config opencv --cflags --libs`
-
+LIBS += -L$$PWD/../../../../opt/ros/fuerte/lib/ -lopencv_core -lopencv_calib3d -lopencv_highgui -lopencv_imgproc
+INCLUDEPATH += $$PWD/../../../../opt/ros/fuerte/include/opencv2
+DEPENDPATH += $$PWD/../../../../opt/ros/fuerte/include/opencv2
+INCLUDEPATH += $$PWD/../../../../opt/ros/fuerte/include/opencv
+DEPENDPATH += $$PWD/../../../../opt/ros/fuerte/include/opencv
