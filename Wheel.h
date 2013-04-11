@@ -1,0 +1,55 @@
+/// |------------------------------------------------------------------------------------------------|
+/// |                                                                                                |
+/// |               Class Wheel - describes the driving wheel powered by the engine. It has:         |
+/// |           *Radius                                                                              |
+/// |           *Current angular velocity                                                            |
+/// |           *its own engine                                                                      |
+/// -------------------------------------------------------------------------------------------------|
+/// |               The Wheel can:                                                                   |
+/// |           *return the currrent values (described above)                                        |
+/// |           *be set to turn with the given angular velocity                                      |
+/// |           *Avoid obstacles on the way to and from lunabins and mining spot                     |
+/// |------------------------------------------------------------------------------------------------|
+
+
+
+#ifndef WHEEL_H
+#define WHEEL_H
+
+#include <QWidget>
+#include "Engine.h"
+
+
+///Wheel's radius
+#define R 0.3
+
+class Wheel
+{
+    public:
+        Wheel(double w=0, double r=0.3) : md_angVelocity(w), md_radius(r), m_engine(Engine()) {} ;
+        virtual ~Wheel(){}
+        double GetVelocity() {return md_angVelocity;}
+        double GetRadius() {return md_radius;}
+
+
+        void SetAngularVelocity(double val=0, double time=0.5) { md_angVelocity = val;}
+        double GetAngularVelocity(){return md_angVelocity;}
+
+        double SetEngineSpeed(double w){m_engine.SetAnVelocity(w);}
+        double SetEngineVoltage(double U){m_engine.SetVoltage(U);}
+        double SetEngineCurrent(double I){m_engine.SetCurrent(I);}
+        double SetEngineMaxCurrent(double Imax){m_engine.SetMaxCurrent(Imax);}
+
+        double GetEngineVoltage(){}
+        double GetEngineCurrent(){}
+        double GetEngineSpeed(){}
+
+
+    protected:
+    private:
+        double md_angVelocity;
+        double md_radius;
+        Engine m_engine;
+};
+
+#endif // WHEEL_H
