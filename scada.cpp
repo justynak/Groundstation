@@ -87,8 +87,8 @@ void SCADA::UpdateValues(){
     ui->sliderEngine3w->setValue ( robot->GetEngineSpeed(3));
 
     ui->sliderMass->setValue ( robot->GetCylinderWeight()) ;
-    ui->sliderTensometer0->setValue ( robot->GetTensometer(0));
-    ui->sliderTensometer1->setValue( robot->GetTensometer(1));
+    ui->sliderTensometer0->setValue ( robot->GetMass());
+    ui->sliderTensometer1->setValue( robot->GetTensometer());
 
 
 }

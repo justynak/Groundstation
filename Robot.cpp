@@ -209,116 +209,19 @@ void Robot::Turn(double angle, double t){
 }
 
 
-void Robot::readResponse(){
-    //QByteArray block;
-    char* block = new char[4];
-    socket->read(block, 4);
-    //hex
-
-    if(block[0]!=START) return;
-    //if(block.capacity()<4) return;
-
-    switch(block[1]){
-        case 1: {
-            ///zapytania
-        switch(block[2]){
-        case 1:{
-            //this->battery.SetCurrent();
-            }
-        }
-    /////////////////////////////////////////
-    case 2: {
-
-        }
-    /////////////////////////////////////////////////
-    case 3: {
-
-        }
-        //////////////////////////////////////////////
-    case 4:{
-
-        }
-        //////////////////////////////////////////////
-    case 5:{
-
-    }
-        ///////////////////////////////////////
-    case 6:{
-
-    }
-        /////////////////////////////
-    case 7:{
-
-    }
-        //////////////////////////////////
-    case 8:{
-
-    }
-        ///////////////////////////////////
-    case 10:{
-
-    }
-        ///////////////////////////////////////
-    case 11:{
-
-    }
-        ///////////////////////////////////////
-    case 12:{
-
-    }
-        ///////////////////////////////////////
-    case 13:{
-
-    }
-        ///////////////////////////////////////
-    case 14:{
-
-    }
-        ///////////////////////////////////////
-    case 15:{
-
-    }
-        ///////////////////////////////////////
-    case 16:{
-
-    }
-        ///////////////////////////////////////
-    case 17:{
-
-    }
-        ///////////////////////////////////////
-    case 18:{
-
-    }
-    case 19:{
-
-    }
-        ///////////////////////////////////////
-    case 20:{
-
-    }
-    case 21:{
-
-    }
-        ///////////////////////////////////////
-    }
+//void Robot::readResponse(){
+//}
 
 
-
-
-    delete block;
-    }
-}
-
-
-/////If connected to GS
+/////If connected to robot
 void Robot::connected(){
     std::cout<<"connected\n";
 }
 
 
+
 /////Arm position
- void Robot::SetArmPosition(POSITION pos) //6
+void Robot::SetArmPosition(POSITION pos) //6
  {
      m_arm.SetPosition(pos);
 
@@ -336,7 +239,7 @@ void Robot::connected(){
      if(!socket->waitForReadyRead(1000)) return;
      if(!socket->read(bl, 4)) return;   //check if read
      if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)6)    return;            //check ID
+     if(bl[1]!=(char)6)    return;      //check ID
 
      emit ArmPositionChanged(pos);
 
@@ -345,7 +248,7 @@ void Robot::connected(){
      if(!socket->waitForReadyRead(1000)) return;
      if(!socket->read(bl, 4)) return;   //check if read
      if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)6)    return;            //check ID
+     if(bl[1]!=(char)6)    return;       //check ID
 
      delete bl;
  }
@@ -355,6 +258,188 @@ void Robot::connected(){
  ///////Update values
  void Robot::updateValues(){
     //wszystkie zapytania
+     QByteArray block;
+
+     //BATTERY
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(1, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+     socket->write(block);
+
+     char* bl = new char[4];
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->battery->SetVoltage((double)(((int)bl[3])/256*20)); //setvoltage
+     this->battery->SetCurrent((double)(((int)bl[2])/256*1));  //setcurrent
+     socket->flush();
+
+     //CYLINDER CURRENT
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(2, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->m_cylinder.SetCurrent(((int)bl[2])/256*1);
+     socket->flush();
+
+     //TENSOMETERS-MASS
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(3, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->m_cylinder.SetWeight((int)(bl[2])/256*10);
+
+     socket->flush();
+
+     //TENSOMETERS-VALUES
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(4, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->SetTensometer((int)(bl[2])/256);
+     socket->flush();
+
+     //ARM POSITION
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(5, 10)));
+     block.append((QByteArray::number(0, 10)));
+
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->SetArmPosition(static_cast<POSITION>((int)(bl[2])));
+     socket->flush();
+
+     //ENGINE nr+dir+val
+     for(int i=0; i<4; ++i){
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(6, 10)));
+     block.append((QByteArray::number(i, 10)));
+
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
+
+     socket->flush();
+     }
+
+     //CYLINDER dir+val
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(7, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     this->m_cylinder.SetEngineSpeed((int)bl[3]/255);
+     socket->flush();
+
+     //ENGINE IMPULSES
+     for(int i=0; i<4; ++i){
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(8, 10)));
+     block.append((QByteArray::number(i, 10))); ///akumulator
+
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     ///impulsy??
+     socket->flush();
+     }
+
+     //ELECTROMAGNET
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10)));
+     block.append((QByteArray::number(9, 10))); ///akumulator
+     block.append((QByteArray::number(0, 10)));
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     bool val = true;
+     //jaki jest warunek na true/false?
+     this->m_cylinder.SetElectromagnet((val));
+     socket->flush();
+
+
+     //CYLINDER OPENED
+     block.append('#');
+     block.append((QByteArray::number(1, 10)));
+     block.append((QByteArray::number(0, 10))); ///akumulator
+     block.append((QByteArray::number(10, 10)));
+     block.append((QByteArray::number(0, 10)));
+     socket->write(block);
+
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)1)    return;      //check ID
+
+     int vl = true;
+     //jaki warunek na true/false?
+     this->m_cylinder.SetFlap(vl);
+     socket->flush();
+
+     delete bl;
+
 
      //////////////////////
      emit changedValues();
@@ -370,6 +455,8 @@ void Robot::connected(){
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(0, 10)));
+
+     emit StartedAll();
 
               char* bl = new char[4];
      if(!socket->waitForReadyRead(1000)) return;
@@ -390,6 +477,7 @@ void Robot::connected(){
 void Robot::EngineSteer(int i, double w){
 
     int val = (int)(w*256/5);
+    emit EngineSteered(i, w);
      QByteArray block;
      block.append('#');
      block.append((QByteArray::number(2, 10)));
@@ -417,7 +505,7 @@ void Robot::EngineSteer(int i, double w){
 
  //////Engine stop //3
 void Robot::EngineStop(int i){
-
+     emit EngineStopped(i);
      QByteArray block;
      block.append('#');
      block.append((QByteArray::number(4, 10)));
@@ -440,12 +528,14 @@ void Robot::EngineStop(int i){
  //////// Set cylinder to position 0 //4
 
 void Robot::CylinderToZero(int w){
+    emit CylinderSetToZero(w);
      QByteArray block;
      block.append('#');
      block.append((QByteArray::number(5, 10)));
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(w, 10)));
      block.append((QByteArray::number(0, 10)));
+     emit CylinderSetToZero(w);
 
      char* bl = new char[4];
 
@@ -468,7 +558,7 @@ void Robot::CylinderToZero(int w){
 
 
 void Robot::SetElectromagnet(bool On) {
-
+    emit Electromagnet(On);
      QByteArray block;
      block.append('#');
      block.append((QByteArray::number(7, 10)));
@@ -498,19 +588,23 @@ void Robot::TeleoperationOn(){
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(0, 10)));
 
+     emit Teleoperation();
+     //this->teleoperated=true;
+
      char* bl = new char[4];
 
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)8)    return;            //check ID
 
      if(!socket->waitForReadyRead(1000)) return;
      if(!socket->read(bl, 4)) return;   //check if read
      if(bl[0]!='#') return;             //check start sign
      if(bl[1]!=(char)8)    return;            //check ID
 
-    this->teleoperated=true;
+     if(!socket->waitForReadyRead(1000)) return;
+     if(!socket->read(bl, 4)) return;   //check if read
+     if(bl[0]!='#') return;             //check start sign
+     if(bl[1]!=(char)8)    return;            //check ID
+
+     this->teleoperated=true;
      emit TeleoperationOn();
 
      delete bl;
@@ -536,12 +630,15 @@ void Robot::StopAll(){
 
 void Robot::StopDriving(){
 
-     QByteArray block;
+    QByteArray block;
      block.append('#');
      block.append((QByteArray::number(14, 10)));
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(0, 10)));
      block.append((QByteArray::number(0, 10)));
+
+     emit StoppedDriving();
+
 
      char* bl = new char[4];
 
@@ -655,7 +752,7 @@ void Robot::StopDriving(){
      if(!socket->waitForReadyRead(1000)) return;
      if(!socket->read(bl, 4)) return;   //check if read
      if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)19)    return;            //check ID
+     if(bl[1]!=(char)19)    return;     //check ID
 
 
      ////cylinder

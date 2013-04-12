@@ -48,7 +48,10 @@ class Robot : public IDiggingSystem, public IDrivingSystem
         double GetCylinderSpeed(){return m_cylinder.GetEngineSpeed();}
         double GetElectromagnet(){return m_cylinder.IsElectroMagnetOn();}
 
-        double GetTensometer(int i){return tensometer[i];}
+        double GetTensometer(){return tensometer[1];}
+        void SetTensometer(double t){tensometer[1]=t;}
+
+        double GetMass(){return m_cylinder.GetWeight();}
 
         bool IsTeleoperated(){return teleoperated;}
 
@@ -91,7 +94,7 @@ signals:
 
 
 public slots:
-        void readResponse();
+        //void readResponse();
         void connected();
         void updateValues();
         void EngineSteer(int i, double w);           //2

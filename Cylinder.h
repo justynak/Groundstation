@@ -35,11 +35,24 @@
 
 class Cylinder
 {
+
+
+protected:
+private:
+    double md_weight;
+    double md_maxweight;
+
+    bool mb_flap;
+    bool mb_electromagnet;
+    Engine m_engine;
+
+
     public:
         Cylinder(double weight=0.0, double maxweight=WEIGHT, bool flap=false, bool electro=false) : md_weight(weight), md_maxweight(maxweight), mb_flap(flap), mb_electromagnet(electro) {};
         virtual ~Cylinder(){}
 
         double GetWeight() { return md_weight; }
+        double SetWeight(double w){md_weight=w;}
         bool IsCylinderFull() {if (md_weight==md_maxweight) return true; else return false;};
 
         ///Returns true if the flaps are open
@@ -65,22 +78,21 @@ class Cylinder
         void SetEngineSpeed(double w){m_engine.SetAnVelocity(w);}
 
         ///unloads the material
-        void Unload(double weight=WEIGHT);
+        void Unload(double md_weight=0);
 
         void SetMaxVoltage(double V){m_engine.SetMaxVoltage(V);}
+        double GetMaxVoltage(){return m_engine.GetCurrent();}
 
         void SetMaxCurrent(double I){m_engine.SetMaxCurrent(I);}
+        double GetMaxCurrent(){return m_engine.GetMaxCurrent();}
+
+        void SetVoltage(double V){m_engine.SetVoltage(V);}
+        double GetVoltage(){return m_engine.GetVoltage();}
+
+        void SetCurrent(double I){m_engine.SetCurrent(I);}
+        double GetCurrent(){return m_engine.GetCurrent();}
 
 
-
-    protected:
-    private:
-        double md_weight;
-        double md_maxweight;
-
-        bool mb_flap;
-        bool mb_electromagnet;
-        Engine m_engine;
 
 };
 

@@ -4,6 +4,7 @@
 #include<QTimer>
 
 
+int seconds = 600;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,20 +18,21 @@ MainWindow::MainWindow(QWidget *parent) :
     imgSmall.load(":/images/small.png");
 
     ui->labelMap->setPixmap(imgMap);
-    //ui->labelWebCam->setPixmap(imgWebCam);
 
     //joy = new Joystick();
 
-
-    ////    IP CAM
+   ////    IP CAM
     ////////  ZAMIAST 0 -> const std::string videoStreamAddress = "http://<username:password>@<ip_address>/video.cgi?.mjpg"; //czy w tym stylu
     cam.open(0);
     //////////////////////////////////
 
     t=new QTimer();
     t->start(50);
+    t_counter=new QTimer();
+    t_counter->start(1000);
 
     connect(t, SIGNAL(timeout()), this, SLOT(updateCamImage()));
+    connect(t_counter, SIGNAL(timeout()), this, SLOT(updateTime()));
 
     //if(!(joy->init("/dev/input/js0"))){
     //    t = new QTimer(this);
@@ -220,4 +222,12 @@ void MainWindow::updateCamImage(){
     QImage img((uchar*)mat.data, mat.cols, mat.rows, QImage::Format_RGB888);
     ui->labelWebCam->setPixmap(QPixmap::fromImage(img));
 
+}
+
+void MainWindow::updateTime(){
+    if(seconds>=0){
+        ui->lcdTimer->display(seconds);
+        --seconds;}
+    else
+        t_counter->stop();
 }
