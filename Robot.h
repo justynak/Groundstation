@@ -57,6 +57,9 @@ class Robot : public IDiggingSystem, public IDrivingSystem
 
         virtual ~Robot(){}
 
+        char* ReceiveFrame(int id);
+        void SendFrame(int id, int arg1, int arg2, int arg3);
+
 
 
 private:

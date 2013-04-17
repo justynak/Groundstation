@@ -85,45 +85,26 @@ void Robot::Drive(double v, double t){
     Robot::SetPosition(ds,da);
 
 /////////////// <DO EDYCJI> ///////////////////////////
-     QByteArray block;
-
      ///ramka komunikacyjna: id:11, arg1:cokolwiek, arg2:predkosc, arg3:czas
-     block.append('#'); //
-     block.append((QByteArray::number(11, 10)));   //ID
-     block.append((QByteArray::number(0, 10)));   //arg1
-     //1- prawo, 16-lewo //kierunek???
     // if(v>0) block.append(1);
     //    else block.append(16);
-
-
      int vel = static_cast<int>(v*256/5); //bo najfajniej się wtedy rusza
      int tm = static_cast<int>(t*256/5);
-
-     block.append((QByteArray::number(vel, 10)));     //arg2
-     block.append((QByteArray::number(tm, 10)));       //arg3
-
-     //wyslij ramke
-     socket->write(block);
+     SendFrame(11, 0, vel, tm);
 
      ///odpowiedz
      char* bl = new char[4];
 
-     //wait to bytes to be written for 1s, else return
-     if(!socket->waitForReadyRead(1000)) return;
+     bl = ReceiveFrame(11);
 
-     if(!socket->read(bl, 4)) return; //check if read
-     if(bl[0]!='#') return;           //check start sign
-     if(bl[1]!=(char)11)    return;          //check ID
-     emit DrivenForward(v, t); ///nie ruszać tej linii!
+
+     emit DrivenForward(v,t);  //nie ruszać tej linii!
      Robot::SetLinearVelocity(v);
 
      socket->flush(); //clean
 
      //wait to bytes to be written for 1s, else return
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)11)    return;            //check ID
+     bl = ReceiveFrame(11);
 
 ///////////////// </DO EDYCJI>  ///////////////////////////////////
 
@@ -167,38 +148,25 @@ void Robot::Turn(double angle, double t){
     std::cout<<"I have turned to an angle "<<angle<<std::endl;
 
     ///////////// <DO EDYCJI> //////////////////
-     QByteArray block;
 
      //id:12, arg1-cokolwiek, arg2-predkosc, agr3-czas
-     block.append('#'); //1
-     block.append(QByteArray::number(12, 10));   //id //12 to int
-     block.append(QByteArray::number(0,10)); //arg1
+     int vel = (int)(10); //vel=10 fajnie dziala
+     int tm = (int)(t*256/5);
+     SendFrame(12,0, vel, tm);
 
      //kierunek?
      //16- prawo, 1-lewo
      //if(a>0) block.append(16);
      //else block.append(1);
 
-     int vel = (int)(10); //vel=10 fajnie dziala
-     int tm = (int)(t*256/5);
-     block.append(QByteArray::number(vel, 10));   //arg2
-     block.append(QByteArray::number(tm, 10));     //arg3
-
-     socket->write(block);
      socket->flush();
 
      char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)12)    return;            //check ID
+     bl = ReceiveFrame(12);
 
      emit Turned(a, t);
 
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)12)    return;            //check ID
+     bl=ReceiveFrame(12);
 
      //zwloka czasowa
 
@@ -207,10 +175,6 @@ void Robot::Turn(double angle, double t){
 
     delete bl;
 }
-
-
-//void Robot::readResponse(){
-//}
 
 
 /////If connected to robot
@@ -226,29 +190,18 @@ void Robot::SetArmPosition(POSITION pos) //6
      m_arm.SetPosition(pos);
 
      //id 6, arg1-cokolwiek, arg2-pozycja, arg3 - cokolwiek
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(6, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(pos, 10)));
-     block.append((QByteArray::number(0, 10)));
+     SendFrame(6,0, (int)pos, 0 );
 
-       emit ArmPositionChanged(pos);
+     emit ArmPositionChanged(pos);
 
      char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)6)    return;      //check ID
+     bl=ReceiveFrame(6);
 
      emit ArmPositionChanged(pos);
 
      this->m_arm.SetPosition(pos);
 
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)6)    return;       //check ID
+     bl=ReceiveFrame(6);
 
      delete bl;
  }
@@ -802,3 +755,26 @@ void Robot::StopDriving(){
 
     delete bl;
  }                   //21
+
+
+ void Robot::SendFrame(int id, int arg1, int arg2, int arg3){
+     QByteArray block;
+     block.append('#');
+     block.append((QByteArray::number(id, 10)));
+     block.append((QByteArray::number(arg1, 10)));
+     block.append((QByteArray::number(arg2, 10)));
+     block.append((QByteArray::number(arg3, 10)));
+
+     socket->write(block);
+ }
+
+ char* Robot::ReceiveFrame(int id){
+     char* bl = new char[4];
+     if(!socket->waitForReadyRead(1000)) {delete bl; return 0;}
+     if(!socket->read(bl, 4)) {delete bl; return 0;}   //check if read
+     if(bl[0]!='#') {delete bl; return 0;}             //check start sign
+     if(bl[1]!=(char)id)    {delete bl; return 0 ;}
+     return bl;
+
+ }
+

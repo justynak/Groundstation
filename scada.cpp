@@ -29,7 +29,7 @@ void SCADA::initialize(){
     connect(robot, SIGNAL(CylinderMoved(double)), this, SLOT(CylinderMove(double)));
     connect(robot, SIGNAL(CylinderSetToGround(double)), this, SLOT(CylinderToGround(double)));
     connect(robot, SIGNAL(CylinderSetToZero(double)), this, SLOT(CylinderToZero(double)));
-    connect(robot, SIGNAL(DrivenForward(double, double)), this, SLOT(Drive(double,double)));
+    connect(robot, SIGNAL(DrivenForward(double, double)), this, SLOT(Drive(double, double)));
     connect(robot, SIGNAL(Electromagnet(bool)), this, SLOT(SetElectromagnet(bool)));
     connect(robot, SIGNAL(EngineSteered(int, double)), this, SLOT(EngineSteer(int, double)));
     connect(robot, SIGNAL(EngineStopped(int)), this, SLOT(EngineStop(int)));
@@ -120,10 +120,10 @@ void SCADA::StartAll(){
     ui->textBrowser->append(tr("ROBOT STARTED"));
 }                            //10
 void SCADA::Drive(double v, double t){
-    ui->textBrowser->append(tr("Robot drove for t= %1, v=").arg(v).arg(t));
+    ui->textBrowser->append(tr("Robot drove for t= %1, v=%2").arg(t).arg(v));
 }       //11
 void SCADA::Turn(double angle, double t){
-    ui->textBrowser->append(tr("Robot turned for t= %1, a=").arg(t).arg(angle));
+    ui->textBrowser->append(tr("Robot turned for t= %1, a=%2").arg(t).arg(angle));
 }    //12
 //niestandardowej brak                      //13
 void SCADA::StopDriving(){
