@@ -38,6 +38,8 @@ class Arm
         void SetEngineMaxVoltage(double Umax){m_engine.SetMaxVoltage(Umax);}
         double GetMaxVoltage(){return m_engine.GetMaxVoltage();}
 
+        void Stop(){m_engine.Stop();}
+
     protected:
     private:
         POSITION m_position;

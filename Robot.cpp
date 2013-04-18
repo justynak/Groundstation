@@ -7,7 +7,10 @@
 
 #define START '#'
 
-/////////constructor/////////////////
+//////////////////////////////////
+//////     constructor    ////////
+//////////////////////////////////
+
 Robot::Robot(double x, double y, double a, QObject *parent){
             md_linearVelocity=md_angularVelocity=0;
             md_wheelTrack=1.0;
@@ -31,13 +34,17 @@ Robot::Robot(double x, double y, double a, QObject *parent){
 
         }
 
+
+
+/////////////////////////////////////
+///////   Position - odometry  //////
+/////////////////////////////////////
 void Robot::SetPosition(double* p){
     md_position[0]=p[0];
     md_position[1]=p[1];
     md_position[2]=p[2];
     }
 
-//////////Position - odometry
 void Robot::SetPosition(double ds, double da){
     ///get the old position
     double* p_old= new double[3];
@@ -66,166 +73,78 @@ void Robot::SetPosition(double ds, double da){
 }
 
 
+
+
+
+/////////////////////////////////////////////////////////////
+////////////////////    SLOTS!!!!!    ///////////////////////
+/////////////////////////////////////////////////////////////
+
+
+///////////////////////
 ////////BASIC//////////
-//1 Update Values BLOCK
+///////////////////////
+
+//1 Update Values
 void Robot::BasicChangeValues(){
-   //wszystkie zapytania
-    QByteArray block;
 
     //BATTERY
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(1, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-    socket->write(block);
-
+    SendFrame(1,0, 1,0);
     char* bl = new char[4];
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    bl = ReceiveFrame(1);
     this->battery->SetVoltage((double)(((int)bl[3])/256*20)); //setvoltage
     this->battery->SetCurrent((double)(((int)bl[2])/256*1));  //setcurrent
     socket->flush();
 
     //CYLINDER CURRENT
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(2, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,2,0);
+    bl = ReceiveFrame(1);
     this->m_cylinder.SetCurrent(((int)bl[2])/256*1);
     socket->flush();
 
     //TENSOMETERS-MASS
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(3, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,3,0);
+    bl= ReceiveFrame(1);
     this->m_cylinder.SetWeight((int)(bl[2])/256*10);
-
     socket->flush();
 
     //TENSOMETERS-VALUES
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(4, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,4,0);
+    bl= ReceiveFrame(1);
     this->SetTensometer((int)(bl[2])/256);
     socket->flush();
 
     //ARM POSITION
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(5, 10)));
-    block.append((QByteArray::number(0, 10)));
-
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,5,0);
+    bl = ReceiveFrame(1);
     this->SetArmPosition(static_cast<POSITION>((int)(bl[2])));
     socket->flush();
 
     //ENGINE nr+dir+val
     for(int i=0; i<4; ++i){
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(6, 10)));
-    block.append((QByteArray::number(i, 10)));
-
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
-    this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
-
-    socket->flush();
+         SendFrame(1,0,6,i);
+         bl = ReceiveFrame(1);
+         this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
+         socket->flush();
     }
 
     //CYLINDER dir+val
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(7, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,7,0);
+    bl = ReceiveFrame(1);
     this->m_cylinder.SetEngineSpeed((int)bl[3]/255);
     socket->flush();
 
     //ENGINE IMPULSES
     for(int i=0; i<4; ++i){
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(8, 10)));
-    block.append((QByteArray::number(i, 10))); ///akumulator
-
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
-    ///impulsy??
-    socket->flush();
+        SendFrame(1,0,8,i);
+        bl = ReceiveFrame(1);
+         ///impulsy??
+        socket->flush();
     }
 
     //ELECTROMAGNET
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(9, 10))); ///akumulator
-    block.append((QByteArray::number(0, 10)));
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,9,0);
+    bl = ReceiveFrame(1);
     bool val = true;
     //jaki jest warunek na true/false?
     this->m_cylinder.SetElectromagnet((val));
@@ -233,18 +152,8 @@ void Robot::BasicChangeValues(){
 
 
     //CYLINDER OPENED
-    block.append('#');
-    block.append((QByteArray::number(1, 10)));
-    block.append((QByteArray::number(0, 10))); ///akumulator
-    block.append((QByteArray::number(10, 10)));
-    block.append((QByteArray::number(0, 10)));
-    socket->write(block);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)1)    return;      //check ID
-
+    SendFrame(1,0,10,0);
+    bl = ReceiveFrame(1);
     int vl = true;
     //jaki warunek na true/false?
     this->m_cylinder.SetFlap(vl);
@@ -252,49 +161,51 @@ void Robot::BasicChangeValues(){
 
     delete bl;
 
-
-    //////////////////////
-    emit changedValues();
+    emit _BasicChangeValues();
 }
 
-//2 Steer Engine BLOCK
+//2 Steer Engine Arm/Cylinder //howto differ?
 void Robot::BasicEngineSteer(int i, double w){
 
     int val = (int)(w*256/5);
-    emit EngineSteered(i, w);
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(2, 10)));
-     block.append((QByteArray::number(i, 10)));
-     block.append((QByteArray::number(val, 10)));
-     block.append((QByteArray::number(0, 10)));
+    //emit EngineSteered(i, w);
 
-      char* bl = new char[4];
+    SendFrame(2, i, val,0);
+    char* bl = new char[4];
+    bl = ReceiveFrame(2);
 
+    emit _BasicEngineSteer(i,w);
+    this->m_wheel[i].SetEngineSpeed(w);
 
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)2)    return;            //check ID
-
-
-     emit EngineSteered(i, w);
-     this->m_wheel[i].SetEngineSpeed(w);
-
-     delete bl;
+    delete bl;
  }
 
-//3 Driving Steer Engine DOALL
+//3 Driving Steer Engine
 void Robot::BasicEngineDrivingSteer(int i, double w){
+    int val = (int)(w*256/5);
+    //emit EngineSteered(i, w);
+    SendFrame(3, i, val,0);
+    char* bl = new char[4];
+    bl = ReceiveFrame(2);
+
+    emit _BasicEngineSteer(i,w);
+    this->m_wheel[i].SetEngineSpeed(w);
+
+    delete bl;
 
 }
 
-//4 0 Cylinder Position DOALL
+//4 0 Cylinder Position ARGS????
 void Robot::BasicCylinderSetToZero(double w){
-
+    int val = (int)(w*256/5);
+    SendFrame(4,0,w,0);
+    char* bl = new char[4];
+    bl=ReceiveFrame(4);
+    emit _BasicCylinderSetToZero(w);
+    delete bl;
 }
 
-//5 Arm Position  BLOCK
+//5 Arm Position
 void Robot::BasicArmPositionChange(POSITION pos)
  {
      m_arm.SetPosition(pos);
@@ -312,28 +223,20 @@ void Robot::BasicArmPositionChange(POSITION pos)
      delete bl;
  }
 
-//6 Electromagnets   BLOCK
+//6 Electromagnets
 void Robot::BasicElectromagnet(bool on) {
-    emit Electromagnet(On);
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(7, 10)));
-     block.append((QByteArray::number(On, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
+    //emit Electromagnet(On);
+    SendFrame(6, 0, (int)on, 0);
 
-     char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)7)    return;            //check ID
+    char* bl = new char[4];
+    bl= ReceiveFrame(6);
 
     this->m_cylinder.SetElectromagnet(On);
-     emit Electromagnet(On);
-     delete bl;
+    emit Electromagnet(On);
+    delete bl;
  }
 
-//7 Go Forward  BLOCK
+//7 Go Forward  DIRECTION
 void Robot::BasicDriveForward(double v, double t){
     ///values needed to calculate teh new angular velocities of the wheels
     double r0 = Robot::m_wheel[0].GetRadius();
@@ -341,48 +244,31 @@ void Robot::BasicDriveForward(double v, double t){
     double wl = Robot::m_wheel[0].GetAngularVelocity();
     double wr = Robot::m_wheel[1].GetAngularVelocity();
     double v_old = Robot::GetLinearVelocity();
-
     std::cout<<"I have driven with the velocity "<<v<<" for time "<<t<<std::endl;
 
     double ds = v*t;
     double da=0.0;
-
     Robot::SetPosition(ds,da);
 
-/////////////// <DO EDYCJI> ///////////////////////////
-     ///ramka komunikacyjna: id:11, arg1:cokolwiek, arg2:predkosc, arg3:czas
-    // if(v>0) block.append(1);
-    //    else block.append(16);
      int vel = static_cast<int>(v*256/5); //bo najfajniej się wtedy rusza
      int tm = static_cast<int>(t*256/5);
-     SendFrame(11, 0, vel, tm);
-
-     ///odpowiedz
+     SendFrame(7, 0, vel, tm);
      char* bl = new char[4];
+     bl = ReceiveFrame(7);
 
-     bl = ReceiveFrame(11);
-
-
-     emit DrivenForward(v,t);  //nie ruszać tej linii!
+     emit _BasicDriveForward(vel,tm);
      Robot::SetLinearVelocity(v);
-
-     socket->flush(); //clean
-
-     //wait to bytes to be written for 1s, else return
+     socket->flush();
      bl = ReceiveFrame(11);
-
-///////////////// </DO EDYCJI>  ///////////////////////////////////
 
      Robot::m_wheel[0].SetAngularVelocity(v/(2*PI*r0));
      Robot::m_wheel[1].SetAngularVelocity(v/(2*PI*r1));
-
      delete bl;
 
 }
 
-//8 Turn BLOCK
+//8 Turn DIRECTION
 void Robot::BasicTurn(double angle, double t){
-    //double v =  Robot::GetLinearVelocity();
     double w = Robot::GetAngularVelocity();
     double rl = Robot::m_wheel[0].GetRadius();
     double rr = Robot::m_wheel[1].GetRadius();
@@ -408,99 +294,121 @@ void Robot::BasicTurn(double angle, double t){
 
     ///change position
     Robot::SetPosition(ds,da);
-    ///send a message
     std::cout<<"I have turned to an angle "<<angle<<std::endl;
 
-    ///////////// <DO EDYCJI> //////////////////
-
-     //id:12, arg1-cokolwiek, arg2-predkosc, agr3-czas
      int vel = (int)(10); //vel=10 fajnie dziala
      int tm = (int)(t*256/5);
-     SendFrame(12,0, vel, tm);
-
-     //kierunek?
-     //16- prawo, 1-lewo
-     //if(a>0) block.append(16);
-     //else block.append(1);
+     SendFrame(8,0, vel, tm);
 
      socket->flush();
-
      char* bl = new char[4];
      bl = ReceiveFrame(12);
-
-     emit Turned(a, t);
+     emit _BasicTurn(vel, tm);
 
      bl=ReceiveFrame(12);
+     Robot::m_wheel[1].SetAngularVelocity(0);
+     Robot::m_wheel[0].SetAngularVelocity(0);
 
-     //zwloka czasowa
-
-      Robot::m_wheel[1].SetAngularVelocity(0);
-      Robot::m_wheel[0].SetAngularVelocity(0);
-
-    delete bl;
+     socket->flush();
+     delete bl;
 }
 
 //9 Arch DOALL
 void Robot::BasicTurnArc(){
+    SendFrame(9, 0,0,0);
+    char* bl = new char[4];
+    bl = ReceiveFrame(9);
+    delete bl;
 }
 
-///////START//////////////
+///////////////////////////////
+/////////----START-----////////
+///////////////////////////////
+
 //20 Start
  void Robot::StartAll(){
 
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(10, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-
-     emit StartedAll();
-
-              char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)10)    return;            //check ID
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)10)    return;            //check ID
-
-    delete bl;
+     SendFrame(20,0,0,0);
+     char* bl = new char[4];
+     bl=ReceiveFrame(20);
+     emit _StartAll();
+     delete bl;
  }
 
 
- ///////////MINING/////////////
+/////////////////////////////////
+///////------/MINING----/////////
+/////////////////////////////////
+
 //30 Initiate   DOALL
  void Robot::MiningInitiate(){
-
+    SendFrame(30,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(30);
+    emit _MiningInitiate();
+    delete bl;
  }
 
 //31 Cylinder check
  void Robot::MiningCylinderState(bool opened){
-
+     SendFrame(31,0,0,0);
+     bl = new char[4];
+     bl = ReceiveFrame(30);
+     //opened
+     emit _MiningCylinderState(opened);
+     delete bl;
  }
 
 //32 Arm Position 4
 void Robot::MiningArmPosition4(){
+    SendFrame(32,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(32);
+    m_arm.SetPosition(d);
+    emit _MiningArmPosition4();
+    delete bl;
 }
 
 //33 Cylinder start
 void Robot::MiningCylinderStart(){
+    SendFrame(33,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(33);
+    //started
+    emit _MiningCylinderStart();
+    delete bl;
 }
 
-//34 Calibration
+//34 Calibration ///howto??
 void Robot::MiningCalibration(){
+    SendFrame(34,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(34);
+    //started
+    emit _MiningCalibration();
+    delete bl;
 }
 
-//35 Lower to ground
-void Robot::MiningCylinderToGround(){
+//35 Lower to ground //wot??
+void Robot::MiningCylinderToGround(double w){
+    int val = (int)(w*256/5);
+    SendFrame(35,0,val,0);
+    bl = new char[4];
+    bl = ReceiveFrame(35);
+    //started
+    emit _MiningCylinderToGround(w);
+    delete bl;
 }
 
 //36 Power Control
-void Robot::MiningPowerControl(){
+void Robot::MiningPowerControl(double U, double I){
+    SendFrame(34,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(34);
+    //started
+    emit _MiningCalibration();
+    delete bl;
+
 }
 
 //37 Mining&Driving
@@ -515,7 +423,10 @@ void Robot::MiningTensometerMass(){
 void Robot::MiningArmPosition0(){
 }
 
-/////////////UNLOADING///////////
+/////////////////////////////////////
+//////--------UNLOADING--------//////
+/////////////////////////////////////
+
 //40 Init
 void Robot::UnloadInitiate(){
 }
@@ -541,235 +452,40 @@ void Robot::UnloadCylinderShake(){
 }
 
 //46 Cylinder rotate
-void Robot::UnloadCylinderRotate(){
+void Robot::UnloadCylinderRotate(double w){
 }
 
- //7
+//47 Cylider close
+void Robot::UnloadCylinderClose(){
+}
 
+//48 Arm pos check
+void Robot::UnloadArmPositionCheck(){
+}
 
-void Robot::TeleoperationOn(){
+///////////////////////////////
+///////----SECURITY------//////
+///////////////////////////////
 
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(8, 10)));
-     block.append((QByteArray::number(1, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
+//101 Stop all engines
+void Robot::SecurityAllEnginesStop(){
+}
 
-     emit Teleoperation();
-     //this->teleoperated=true;
+//102 Stahp all driving eng.
+void Robot::SecurityDrivingEnginesStop(){
+}
 
-     char* bl = new char[4];
+//103 Stop arm eng
+void Robot::SecurityArmEngineStop(){
+}
 
+//104 Stop cylinder eng
+void Robot::SecurityCylinderEngineStop(){
+}
 
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)8)    return;            //check ID
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)8)    return;            //check ID
-
-     this->teleoperated=true;
-     emit TeleoperationOn();
-
-     delete bl;
- }
- //8
-
-
-void Robot::StopAll(){
-
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(9, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-
-
-     ///////////set all values to 0
-
-     emit StoppedAll();
- }
-
-
-void Robot::StopDriving(){
-
-    QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(14, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-
-     emit StoppedDriving();
-
-
-     char* bl = new char[4];
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)14)    return;            //check ID
-
-
-     ///stop wheels
-     for (int i=0; i<4; ++i)
-        this->m_wheel[i].SetEngineSpeed(0);
-     emit StoppedDriving();
-
-     delete bl;
- }
-
- //14
- //zadeklarowane już{}
- //15
-
- void Robot::CylinderMove(double w){
-
-     QByteArray block;
-     block.append('#');
-     block.append(QByteArray::number(16, 10));
-     block.append(QByteArray::number(0, 10));
-     int val = (int)(256/5*w);
-     block.append(QByteArray::number(val, 10));
-     block.append(QByteArray::number(0, 10));
-
-     char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=16)    return;            //check ID
-
-
-    this->m_cylinder.SetEngineSpeed(w);
-     emit CylinderMoved(w);
-     delete bl;
- }
- //16
-
- void Robot::Calibrate(){
-
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(17, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-     block.append((QByteArray::number(0, 10)));
-
-     char* bl = new char[4];
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)17)    return;            //check ID
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)17)    return;            //check ID
-
-     this->tensometer[0]=(double)bl[2]; //masa
-     this->tensometer[1]=(double)bl[3]; //prad
-     emit Calibrated();
-
-     delete bl;
- }
- //17
-
- void Robot::CylinderToGround(double w){
-
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(18, 10)));
-     block.append((QByteArray::number(0, 10)));
-     int val = (int)(w*256/5);
-     block.append((QByteArray::number(val, 10)));
-     block.append((QByteArray::number(0, 10)));
-
-     char* bl = new char[4];
-
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)2)    return;            //check ID
-
-    this->SetArmPosition(b);
-     emit CylinderSetToGround(w);
-
-    delete bl;
- }
- //18
-
- void Robot::SetMaxCurrentVoltage(double U, double I){
-
-     QByteArray block;
-     block.append('#');
-     block.append((QByteArray::number(19, 10)));
-     block.append((QByteArray::number(0, 10)));
-     int Uv = (int)(256*U/20);
-     int Iv = (int)(256*I/20);
-
-     block.append((QByteArray::number(Uv, 10)));
-     block.append((QByteArray::number(Iv, 10)));
-
-      char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) return;
-     if(!socket->read(bl, 4)) return;   //check if read
-     if(bl[0]!='#') return;             //check start sign
-     if(bl[1]!=(char)19)    return;     //check ID
-
-
-     ////cylinder
-     this->m_cylinder.SetMaxCurrent(I);
-     this->m_cylinder.SetMaxVoltage(U);
-
-     /////wheels
-     for(int i=0; i<4; ++i){
-        this->m_wheel[i].SetEngineMaxCurrent(I);
-        this->m_wheel[i].SetEngineVoltage(U);
-     }
-
-     //////arm
-     this->m_arm.SetEngineMaxCurrent(I);
-     this->m_arm.SetEngineMaxVoltage(U);
-
-     emit CurrentVoltageSet(U, I);
-     delete bl;
-
- }//19
-
- //pilnuj koniec brak
- //20
- void Robot::MassChange(double m){
-
-    QByteArray block;
-    block.append('#');
-    block.append((QByteArray::number(21, 10)));
-    block.append((QByteArray::number(0, 10)));
-    int val = (int)(m*245/5);
-    block.append((QByteArray::number(0, 10)));
-    block.append((QByteArray::number(0, 10)));
-
-     char* bl = new char[4];
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)21)    return;            //check ID
-
-    emit MassChanged(m);
-
-    if(!socket->waitForReadyRead(1000)) return;
-    if(!socket->read(bl, 4)) return;   //check if read
-    if(bl[0]!='#') return;             //check start sign
-    if(bl[1]!=(char)21)    return;            //check ID
-
-    delete bl;
- }                   //21
+//105 Autonomy
+void Robot::SecurityAutonomy(){
+}
 
 
  void Robot::SendFrame(int id, int arg1, int arg2, int arg3){

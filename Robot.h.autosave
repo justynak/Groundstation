@@ -55,6 +55,8 @@ class Robot : public IDiggingSystem, public IDrivingSystem
 
         bool IsTeleoperated(){return teleoperated;}
 
+        void SetMaxCurrentVoltage(double U, double I);
+
         virtual ~Robot(){}
 
         char* ReceiveFrame(int id);
@@ -100,7 +102,7 @@ signals:
         ///UNLOAD SEQ
         void _UnloadInitiate();                          //40
         void _UnloadArmPosition1();                      //41
-        void _UnloadCylinderToZero();                    //42
+        void _UnloadCylinderToZero(double w);            //42
         void _UnloadCylinderOpen();                      //43
         void _UnloadCylinderState(bool opened);             //44
         void _UnloadCylinderShake();                     //45 HARLEM SHAKE LEL
