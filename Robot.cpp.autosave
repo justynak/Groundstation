@@ -429,9 +429,10 @@ void Robot::MiningTensometerMass(){
     SendFrame(38,0,0,0);
     bl = new char[4];
     bl = ReceiveFrame(38);
+    double mass = bl[1];
     //m_cylinder.AddMass(w);
-    m_cylinder.SetWeight(w);
-    emit _MiningTensometerMass();
+    m_cylinder.SetWeight(mass);
+    emit _MiningTensometerMass(mass);
 }
 
 //39 Arm to go
@@ -582,10 +583,21 @@ void Robot::SecurityArmEngineStop(){
 
 //104 Stop cylinder eng
 void Robot::SecurityCylinderEngineStop(){
+    SendFrame(104,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(104);
+    m_cylinder.Stop();
+    emit _SecurityCylinderEngineStop();
+    delete bl;
 }
 
-//105 Autonomy
+//105 Autonomy //wat
 void Robot::SecurityAutonomy(){
+    SendFrame(105,0,0,0);
+    bl = new char[4];
+    bl = ReceiveFrame(105);
+    emit _SecurityAutonomy();
+    delete bl;
 }
 
 
