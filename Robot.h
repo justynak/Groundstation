@@ -85,7 +85,6 @@ signals:
         ///START SEQ.
         void StartedAll();                               //20
 
-
         ////MINING SEQ
         void _MiningInitiate();                          //30
         void _MiningCylinderState(bool opened);          //31        ARG?
@@ -103,12 +102,11 @@ signals:
         void _UnloadArmPosition1();                      //41
         void _UnloadCylinderToZero();                    //42
         void _UnloadCylinderOpen();                      //43
-        void _UnloadWheelState(bool opened);             //44
+        void _UnloadCylinderState(bool opened);             //44
         void _UnloadCylinderShake();                     //45 HARLEM SHAKE LEL
-        void _UnloadWheelRotate();                       //46
+        void _UnloadCylinderRotate(double angle);        //46
         void _UnloadCylinderClose();                     //47
         void _UnloadArmPositionCheck();                  //48    ARG?
-
 
         ///SECURITY SEQ
         void _SecurityAllEnginesStop();                  //101
@@ -125,7 +123,7 @@ signals:
 public slots:
 
         ////BASIC SEQ.
-         void BasicChangValues();                         //1
+         void BasicChangeValues();                         //1
          void BasicEngineSteer(int i, double w);          //2
          void BasicEngineDrivingSteer(int i, double w);   //3    ARG?
          void BasicCylinderSetToZero(double w);           //4
@@ -138,17 +136,16 @@ public slots:
          ///START SEQ.
          void StartAll();                                 //20
 
-
          ////MINING SEQ
          void MiningInitiate();                           //30
-         void MiningCylinderState(bool opened);           //31        ARG?
+         void MiningCylinderState(bool opened);           //31     ARG?
          void MiningArmPosition4();                       //32
          void MiningCylinderStart();                      //33
          void MiningCalibration() ;                       //34
          void MiningCylinderToGround();                   //35
          void MiningPowerControl();                       //36
          void MiningDriving();                            //37
-         void MiningTensometerMass(double mass);          //38
+         void MiningTensometerMass();          //38
          void MiningArmPosition0();                       //39
 
          ///UNLOAD SEQ
@@ -156,12 +153,11 @@ public slots:
          void UnloadArmPosition1();                       //41
          void UnloadCylinderToZero();                     //42
          void UnloadCylinderOpen();                       //43
-         void UnloadWheelState(bool opened);              //44
-         void UnloadCylinderShake();                      //45 HARLEM SHAKE LEL
-         void UnloadWheelRotate();                        //46
+         void UnloadCylinderState(bool opened);           //44
+         void UnloadCylinderShake();                      //45
+         void UnloadCylinderRotate(double angle);         //46
          void UnloadCylinderClose();                      //47
          void UnloadArmPositionCheck();                   //48    ARG?
-
 
          ///SECURITY SEQ
          void SecurityAllEnginesStop();                   //101
