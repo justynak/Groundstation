@@ -71,56 +71,104 @@ private:
 
 
 signals:
-        void changedValues();
-        void EngineSteered(int i, double w);  //2 mainwindow
-     //wysteruj silniki jezdne brak //3
-        void EngineStopped(int i);  //4  //
-        void CylinderSetToZero(double w);   //5
-        void ArmPositionChanged(POSITION pos);  //6 //mainwindow
-        void Electromagnet(bool on);     //7
-        void Teleoperation();       //8 //mainwindow
-        void StoppedAll();          //9 //mainwindow
-        void StartedAll();          //10 //mainwindow
-        void DrivenForward(double v, double t);       //11 //mainwindow-key
-        void Turned(double a, double t);              //12 //mainwindow-key
-        //niestandardowej brak      //13
-        void StoppedDriving();      //14   //mainwindow
-        void Mined();               //15
-        void CylinderMoved(double w);       //16
-        void Calibrated();          //17   //mainwindow
-        void CylinderSetToGround(double w); //18
-        void CurrentVoltageSet(double U, double I);   //19 //mainwindow
-        //pilnuj koniec brak        //20
-        void MassChanged(double m);         //21
+       ////BASIC SEQ.
+        void _BasicChangeValues();                       //1
+        void _BasicEngineSteer(int i, double w);         //2
+        void _BasicEngineDrivingSteer(int i, double w);  //3    ARG?
+        void _BasicCylinderSetToZero(double w);          //4
+        void _BasicArmPositionChange(POSITION pos);      //5
+        void _BasicElectromagnetSet(bool on);            //6
+        void _BasicDriveForward(double v, double t);     //7
+        void _BasicTurn(double a, double t);             //8
+        void _BasicTurnArc();                            //9    ARG?
+
+        ///START SEQ.
+        void StartedAll();                               //20
+
+
+        ////MINING SEQ
+        void _MiningInitiate();                          //30
+        void _MiningCylinderState(bool opened);          //31        ARG?
+        void _MiningArmPosition4();                      //32
+        void _MiningCylinderStart();                     //33
+        void _MiningCalibration() ;                      //34
+        void _MiningCylinderToGround();                  //35
+        void _MiningPowerControl();                      //36
+        void _MiningDriving();                           //37
+        void _MiningTensometerMass(double mass);         //38
+        void _MiningArmPosition0();                      //39
+
+        ///UNLOAD SEQ
+        void _UnloadInitiate();                          //40
+        void _UnloadArmPosition1();                      //41
+        void _UnloadCylinderToZero();                    //42
+        void _UnloadCylinderOpen();                      //43
+        void _UnloadWheelState(bool opened);             //44
+        void _UnloadCylinderShake();                     //45 HARLEM SHAKE LEL
+        void _UnloadWheelRotate();                       //46
+        void _UnloadCylinderClose();                     //47
+        void _UnloadArmPositionCheck();                  //48    ARG?
+
+
+        ///SECURITY SEQ
+        void _SecurityAllEnginesStop();                  //101
+        void _SecurityDrivingEnginesStop();              //102
+        void _SecurityArmEngineStop();                   //103
+        void _SecurityCylinderEngineStop();              //104
+        void _SecurityAutonomy();                        //105
+
+
 
 
 
 
 public slots:
-        //void readResponse();
-        void connected();
-        void updateValues();
-        void EngineSteer(int i, double w);           //2
-        //wysteruj silniki jezdne brak               //3
-        void EngineStop(int i);                      //4
-        void CylinderToZero(int w);                  //5
-        void SetArmPosition(POSITION pos);           //6
-        void SetElectromagnet(bool On) ;             //7
-        void TeleoperationOn();                      //8
-        void StopAll();                              //9
-        void StartAll();                             //10
-        void Drive(double v=0.5, double t=0.2);           //11
-        void Turn(double angle=30, double t=0.2);           //12
-        //niestandardowej brak                       //13
-        void StopDriving();                          //14
-        //zadeklarowane już;                                  //15
-        void CylinderMove(double w);                 //16
-        void Calibrate();                            //17
-        void CylinderToGround(double w);             //18
-        void SetMaxCurrentVoltage(double U, double I);//19
-        //pilnuj koniec brak                         //20
-        void MassChange(double m);                   //21
 
+        ////BASIC SEQ.
+         void BasicChangValues();                         //1
+         void BasicEngineSteer(int i, double w);          //2
+         void BasicEngineDrivingSteer(int i, double w);   //3    ARG?
+         void BasicCylinderSetToZero(double w);           //4
+         void BasicArmPositionChange(POSITION pos);       //5
+         void BasicElectromagnet(bool on);                //6
+         void BasicDriveForward(double v, double t);      //7
+         void BasicTurn(double a, double t);              //8
+         void BasicTurnArc();                             //9    ARG?
+
+         ///START SEQ.
+         void StartAll();                                 //20
+
+
+         ////MINING SEQ
+         void MiningInitiate();                           //30
+         void MiningCylinderState(bool opened);           //31        ARG?
+         void MiningArmPosition4();                       //32
+         void MiningCylinderStart();                      //33
+         void MiningCalibration() ;                       //34
+         void MiningCylinderToGround();                   //35
+         void MiningPowerControl();                       //36
+         void MiningDriving();                            //37
+         void MiningTensometerMass(double mass);          //38
+         void MiningArmPosition0();                       //39
+
+         ///UNLOAD SEQ
+         void UnloadInitiate();                           //40
+         void UnloadArmPosition1();                       //41
+         void UnloadCylinderToZero();                     //42
+         void UnloadCylinderOpen();                       //43
+         void UnloadWheelState(bool opened);              //44
+         void UnloadCylinderShake();                      //45 HARLEM SHAKE LEL
+         void UnloadWheelRotate();                        //46
+         void UnloadCylinderClose();                      //47
+         void UnloadArmPositionCheck();                   //48    ARG?
+
+
+         ///SECURITY SEQ
+         void SecurityAllEnginesStop();                   //101
+         void SecurityDrivingEnginesStop();               //102
+         void SecurityArmEngineStop();                    //103
+         void SecurityCylinderEngineStop();               //104
+         void SecurityAutonomy();                         //105
 
 
 };
