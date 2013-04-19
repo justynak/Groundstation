@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Apr 20 00:13:47 2013
+** Created: Sat Apr 20 00:38:19 2013
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -141,6 +141,7 @@ public:
     QLabel *label_30;
     QFrame *line;
     QPushButton *button_StartAll;
+    QPushButton *button_Teleoperation;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QToolBar *toolBar;
@@ -288,7 +289,7 @@ public:
         button_StopArm->setGeometry(QRect(530, 610, 111, 27));
         button_StopCylinder = new QPushButton(centralwidget);
         button_StopCylinder->setObjectName(QString::fromUtf8("button_StopCylinder"));
-        button_StopCylinder->setGeometry(QRect(530, 650, 121, 27));
+        button_StopCylinder->setGeometry(QRect(530, 650, 111, 27));
         button_Calibration = new QPushButton(centralwidget);
         button_Calibration->setObjectName(QString::fromUtf8("button_Calibration"));
         button_Calibration->setGeometry(QRect(550, 410, 61, 41));
@@ -297,13 +298,13 @@ public:
         button_UpdateValues->setGeometry(QRect(705, 410, 61, 41));
         lineEdit_PowerControlCurrent = new QLineEdit(centralwidget);
         lineEdit_PowerControlCurrent->setObjectName(QString::fromUtf8("lineEdit_PowerControlCurrent"));
-        lineEdit_PowerControlCurrent->setGeometry(QRect(750, 590, 31, 21));
+        lineEdit_PowerControlCurrent->setGeometry(QRect(750, 580, 31, 21));
         lineEdit_PowerControlVoltage = new QLineEdit(centralwidget);
         lineEdit_PowerControlVoltage->setObjectName(QString::fromUtf8("lineEdit_PowerControlVoltage"));
-        lineEdit_PowerControlVoltage->setGeometry(QRect(750, 570, 31, 21));
+        lineEdit_PowerControlVoltage->setGeometry(QRect(750, 560, 31, 21));
         button_PowerControl = new QPushButton(centralwidget);
         button_PowerControl->setObjectName(QString::fromUtf8("button_PowerControl"));
-        button_PowerControl->setGeometry(QRect(670, 620, 101, 21));
+        button_PowerControl->setGeometry(QRect(670, 610, 101, 21));
         label_6 = new QLabel(centralwidget);
         label_6->setObjectName(QString::fromUtf8("label_6"));
         label_6->setGeometry(QRect(950, 120, 121, 17));
@@ -498,14 +499,14 @@ public:
         label_22->setFont(font);
         label_23 = new QLabel(centralwidget);
         label_23->setObjectName(QString::fromUtf8("label_23"));
-        label_23->setGeometry(QRect(670, 530, 111, 21));
+        label_23->setGeometry(QRect(670, 520, 111, 21));
         label_23->setFont(font1);
         label_25 = new QLabel(centralwidget);
         label_25->setObjectName(QString::fromUtf8("label_25"));
-        label_25->setGeometry(QRect(660, 570, 81, 20));
+        label_25->setGeometry(QRect(660, 560, 81, 20));
         label_26 = new QLabel(centralwidget);
         label_26->setObjectName(QString::fromUtf8("label_26"));
-        label_26->setGeometry(QRect(660, 590, 81, 21));
+        label_26->setGeometry(QRect(660, 580, 81, 21));
         line_11 = new QFrame(centralwidget);
         line_11->setObjectName(QString::fromUtf8("line_11"));
         line_11->setGeometry(QRect(510, 690, 261, 20));
@@ -542,6 +543,9 @@ public:
         button_StartAll = new QPushButton(centralwidget);
         button_StartAll->setObjectName(QString::fromUtf8("button_StartAll"));
         button_StartAll->setGeometry(QRect(740, 10, 51, 41));
+        button_Teleoperation = new QPushButton(centralwidget);
+        button_Teleoperation->setObjectName(QString::fromUtf8("button_Teleoperation"));
+        button_Teleoperation->setGeometry(QRect(660, 640, 121, 41));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -683,6 +687,7 @@ public:
         label_29->setText(QApplication::translate("MainWindow", "NOW", 0, QApplication::UnicodeUTF8));
         label_30->setText(QApplication::translate("MainWindow", "MASS", 0, QApplication::UnicodeUTF8));
         button_StartAll->setText(QApplication::translate("MainWindow", "START", 0, QApplication::UnicodeUTF8));
+        button_Teleoperation->setText(QApplication::translate("MainWindow", "TELEOPERATION", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
         toolBar_2->setWindowTitle(QApplication::translate("MainWindow", "toolBar_2", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
