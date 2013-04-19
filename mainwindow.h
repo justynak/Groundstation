@@ -7,6 +7,7 @@
 #include "Robot.h"
 #include "drawArrow.h"
 //#include <joystick.h>
+#include<QSignalMapper>
 
 #ifdef R
 #undef R
@@ -40,11 +41,11 @@ public slots:
     void BasicChangeValues();                        //1
     void BasicEngineSteer();          //2
     void BasicEngineDrivingSteer();   //3
-    void BasicCylinderSetToZero();           //4
-    void BasicArmPositionChange();       //5
+    void BasicCylinderSetToZero(double w);           //4
+    void BasicArmPositionChange(int pos);       //5
     void BasicElectromagnetSet();                //6
-    void BasicDriveForward();      //7
-    void BasicTurn();              //8
+    void BasicDriveForward(double v, double t);      //7
+    void BasicTurn(double a, double t);              //8
     void BasicTurnArc();//9    ARG?
 
     ///START SEQ.
@@ -56,7 +57,7 @@ public slots:
     void MiningArmPosition4();                       //32
     void MiningCylinderStart();                      //33
     void MiningCalibration() ;                       //34
-    void MiningCylinderToGround();                   //35
+    void MiningCylinderToGround(int w);           //35
     void MiningPowerControl();     //36
     void MiningDriving();                            //37
     void MiningTensometerMass();                     //38
@@ -65,9 +66,9 @@ public slots:
     ///UNLOAD SEQ
     void UnloadInitiate();                           //40
     void UnloadArmPosition1();                       //41
-    void UnloadCylinderToZero();             //42
+    void UnloadCylinderToZero(int w);             //42
     void UnloadCylinderOpen();                       //43
-    void UnloadCylinderState();           //44
+    void UnloadCylinderState(bool opened);           //44
     void UnloadCylinderShake();                      //45
     void UnloadCylinderRotate();//46
     void UnloadCylinderClose();                      //47
@@ -96,6 +97,7 @@ private:
     QTimer* t;
     QTimer* t_counter;
     cv::VideoCapture cam;
+    QSignalMapper* signalMapper;
 
 
 };

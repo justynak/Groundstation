@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Apr 20 00:38:19 2013
+** Created: Sat Apr 20 01:06:46 2013
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -142,6 +142,8 @@ public:
     QFrame *line;
     QPushButton *button_StartAll;
     QPushButton *button_Teleoperation;
+    QLineEdit *lineEdit_CylinderSpeed;
+    QLabel *label_31;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QToolBar *toolBar;
@@ -546,6 +548,12 @@ public:
         button_Teleoperation = new QPushButton(centralwidget);
         button_Teleoperation->setObjectName(QString::fromUtf8("button_Teleoperation"));
         button_Teleoperation->setGeometry(QRect(660, 640, 121, 41));
+        lineEdit_CylinderSpeed = new QLineEdit(centralwidget);
+        lineEdit_CylinderSpeed->setObjectName(QString::fromUtf8("lineEdit_CylinderSpeed"));
+        lineEdit_CylinderSpeed->setGeometry(QRect(750, 70, 41, 21));
+        label_31 = new QLabel(centralwidget);
+        label_31->setObjectName(QString::fromUtf8("label_31"));
+        label_31->setGeometry(QRect(680, 70, 66, 17));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -688,6 +696,7 @@ public:
         label_30->setText(QApplication::translate("MainWindow", "MASS", 0, QApplication::UnicodeUTF8));
         button_StartAll->setText(QApplication::translate("MainWindow", "START", 0, QApplication::UnicodeUTF8));
         button_Teleoperation->setText(QApplication::translate("MainWindow", "TELEOPERATION", 0, QApplication::UnicodeUTF8));
+        label_31->setText(QApplication::translate("MainWindow", "Cyl speed", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
         toolBar_2->setWindowTitle(QApplication::translate("MainWindow", "toolBar_2", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

@@ -17,7 +17,12 @@ MainWindow::MainWindow(QWidget *parent) :
     imgMap.load(":/images/map.png");
     imgSmall.load(":/images/small.png");
 
-    //ui->labelMap->setPixmap(imgMap);
+    signalMapper = new QSignalMapper(this);
+    signalMapper->setMapping(ui->button_Mining_SetCylinderTo0, 1);
+    signalMapper->setMapping(ui->button_Mining_ArmPosition4, d);
+    signalMapper->setMapping(ui->button_Mining_ArmPositionTo1, a);
+    signalMapper->setMapping(ui->button_Unloading_SetArmPosition1, a);
+    signalMapper->setMapping(ui->button_Unloading_SetCylinderTo0, 1);
 
     //joy = new Joystick();
 
@@ -72,7 +77,8 @@ void MainWindow::initialize(){
     //void MiningCalibration() ;                       //34
     connect(ui->button_Calibration, SIGNAL(clicked()), this, SLOT(MiningCalibration()));
     //void MiningCylinderToGround(double w);           //35
-    connect(ui->button_Mining_SetCylinderTo0, SIGNAL(clicked()), this, SLOT(MiningCylinderToGround()));
+    connect(ui->button_Mining_SetCylinderTo0, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(MiningCylinderToGround(int)));
     //void MiningPowerControl(double U, double I);     //36
     connect(ui->button_PowerControl, SIGNAL(clicked()), this, SLOT(MiningPowerControl()));
     //void MiningDriving();                            //37
@@ -82,11 +88,12 @@ void MainWindow::initialize(){
     //void MiningArmPosition1();                       //39
     connect(ui->button_Mining_ArmPositionTo1, SIGNAL(clicked()), this, SLOT(MiningArmPosition1()));
     //void UnloadInitiate();                           //40
-    connect(ui->button_Unloading_Initiate, SIGNAL(clicked()), this, SLOT(UnloadInitiate()));
+    //connect(ui->button_Unloading_Initiate, SIGNAL(clicked()), this, SLOT(UnloadInitiate()));
     //void UnloadArmPosition1();                       //41
     connect(ui->button_Unloading_SetArmPosition1, SIGNAL(clicked()), this, SLOT(UnloadArmPosition1()));
     //void UnloadCylinderToZero(double w);             //42
-    connect(ui->button_Unloading_SetCylinderTo0, SIGNAL(clicked()), this, SLOT(UnloadCylinderToZero()));
+    connect(ui->button_Unloading_SetCylinderTo0, SIGNAL(clicked()), signalMapper, SLOT(map()));
+    connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(UnloadCylinderToZero(int)));
     //void UnloadCylinderOpen(); +    //void UnloadCylinderState(bool opened);           //44                      //43
     connect(ui->button_Unloading_OpenCylinder, SIGNAL(clicked()), this, SLOT(UnloadCylinderOpen()));
     //void UnloadCylinderShake();                      //45
@@ -222,11 +229,11 @@ void MainWindow::updateTime(){
 void MainWindow::BasicChangeValues(){}                        //1
 void MainWindow::BasicEngineSteer(){}          //2
 void MainWindow::BasicEngineDrivingSteer(){}   //3
-void MainWindow::BasicCylinderSetToZero(){}           //4
-void MainWindow::BasicArmPositionChange(){}       //5
+void MainWindow::BasicCylinderSetToZero(double w){}           //4
+void MainWindow::BasicArmPositionChange(int pos){}       //5
 void MainWindow::BasicElectromagnetSet(){}                //6
-void MainWindow::BasicDriveForward(){}      //7
-void MainWindow::BasicTurn(){}              //8
+void MainWindow::BasicDriveForward(double v, double t){}      //7
+void MainWindow::BasicTurn(double a, double t){}              //8
 void MainWindow::BasicTurnArc(){}//9    ARG?
 
 ///START SEQ.
@@ -238,7 +245,7 @@ void MainWindow::MiningCylinderState(){}           //31     ARG?
 void MainWindow::MiningArmPosition4(){}                       //32
 void MainWindow::MiningCylinderStart(){}                      //33
 void MainWindow::MiningCalibration() {}                       //34
-void MainWindow::MiningCylinderToGround(){}           //35
+void MainWindow::MiningCylinderToGround(int w){}           //35
 void MainWindow::MiningPowerControl(){}     //36
 void MainWindow::MiningDriving(){}                            //37
 void MainWindow::MiningTensometerMass(){}                     //38
@@ -247,9 +254,9 @@ void MainWindow::MiningArmPosition1(){}                       //39
 ///UNLOAD SEQ
 void MainWindow::UnloadInitiate(){}                           //40
 void MainWindow::UnloadArmPosition1(){}                       //41
-void MainWindow::UnloadCylinderToZero(){}             //42
+void MainWindow::UnloadCylinderToZero(int w){}             //42
 void MainWindow::UnloadCylinderOpen(){}                       //43
-void MainWindow::UnloadCylinderState(){}           //44
+void MainWindow::UnloadCylinderState(bool opened){}           //44
 void MainWindow::UnloadCylinderShake(){}                      //45
 void MainWindow::UnloadCylinderRotate(){}//46
 void MainWindow::UnloadCylinderClose(){}                      //47
