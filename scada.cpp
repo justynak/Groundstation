@@ -22,24 +22,6 @@ SCADA::SCADA(QWidget *parent) :
 }
 
 void SCADA::initialize(){
-    connect(robot, SIGNAL(changedValues()), this, SLOT(UpdateValues()));
-    connect(robot, SIGNAL(ArmPositionChanged(POSITION)), this, SLOT(ArmPosition(POSITION)));
-    connect(robot, SIGNAL(Calibrated()), this, SLOT(Calibrate()));
-    connect(robot, SIGNAL(CurrentVoltageSet(double, double)), this, SLOT(SetMaxCurrentVoltage(double, double)));
-    connect(robot, SIGNAL(CylinderMoved(double)), this, SLOT(CylinderMove(double)));
-    connect(robot, SIGNAL(CylinderSetToGround(double)), this, SLOT(CylinderToGround(double)));
-    connect(robot, SIGNAL(CylinderSetToZero(double)), this, SLOT(CylinderToZero(double)));
-    connect(robot, SIGNAL(DrivenForward(double, double)), this, SLOT(Drive(double, double)));
-    connect(robot, SIGNAL(Electromagnet(bool)), this, SLOT(SetElectromagnet(bool)));
-    connect(robot, SIGNAL(EngineSteered(int, double)), this, SLOT(EngineSteer(int, double)));
-    connect(robot, SIGNAL(EngineStopped(int)), this, SLOT(EngineStop(int)));
-    connect(robot, SIGNAL(Mined()), this, SLOT(Dig()));
-    connect(robot, SIGNAL(StartedAll()), this, SLOT(StartAll()));
-    connect(robot, SIGNAL(StoppedAll()), this, SLOT(StopAll()));
-    connect(robot, SIGNAL(StoppedDriving()), this, SLOT(StopDriving()));
-    connect(robot, SIGNAL(Teleoperation()), this, SLOT(TeleoperationOn()));
-    connect(robot, SIGNAL(Turned(double, double)), this, SLOT(Turn(double,double)));
-    connect(robot, SIGNAL(MassChanged(double)), this, SLOT(MassChange(double)));
 }
 
 SCADA::~SCADA()
@@ -69,7 +51,8 @@ void SCADA::paintEvent(QPaintEvent *){
     ui->labelUp->setPixmap(up);
 }
 
-void SCADA::UpdateValues(){
+
+void SCADA::BasicChangeValues(){
     ui->sliderBatteryI->setValue(robot->GetBatteryCurrent());
     ui->sliderBatteryU->setValue(robot->GetBatteryVoltage());
     ui->sliderCylinderI->setValue ( robot->GetCylinderWeight());
@@ -89,66 +72,147 @@ void SCADA::UpdateValues(){
     ui->sliderMass->setValue ( robot->GetCylinderWeight()) ;
     ui->sliderTensometer0->setValue ( robot->GetMass());
     ui->sliderTensometer1->setValue( robot->GetTensometer());
-
-
 }
 
-void SCADA::EngineSteer(int i, double w){
-    ui->textBrowser->append(tr("Engine %1 steered to %2 speed").arg(i).arg(w));
-}                     //2
-//wysteruj silniki jezdne brak               //3
-void SCADA::EngineStop(int i){
-    ui->textBrowser->append(tr("Engine %1 stopped").arg(i));
-}                      //4
-void SCADA::CylinderToZero(double w){
-   ui->textBrowser->append(tr("Cylinder set to zero"));
-}                       //5
-void SCADA::ArmPosition(POSITION pos){
-    ui->textBrowser->append(tr("Arm set to position %1").arg(pos));
+void SCADA::BasicEngineSteer(int i, double w){
+    ui->textBrowser->append(tr("Basic: Engine %1 steered to %2").arg(i).arg(w));
 }
-//6
-void SCADA::SetElectromagnet(bool on) {
-    ui->textBrowser->append(tr("Electromagnet is %1").arg(on));
-}                    //7
-void SCADA::TeleoperationOn(){
-    ui->textBrowser->append(tr("TELEOPERATION MODE"));
-}                      //8
-void SCADA::StopAll(){
-    ui->textBrowser->append(tr("ALL STOPPED"));
-}                              //9
+
+void SCADA::BasicEngineDrivingSteer(int i, double w){
+    ui->textBrowser->append(tr("Basic: Engine (wheel) %1 steered to %2").arg(i).arg(w));
+}
+
+void SCADA::BasicCylinderSetToZero(double w){
+     ui->textBrowser->append(tr("Basic: Cylinder set to 0 position"));
+}
+
+void SCADA::BasicArmPositionChange(POSITION pos){
+     ui->textBrowser->append(tr("Basic: Arm changet to position").arg(pos));
+}
+
+void SCADA::BasicElectromagnetSet(bool on){
+     ui->textBrowser->append(tr("Basic: Electromagnet: %1").arg(on));
+}
+
+void SCADA::BasicDriveForward(double v, double t){
+     ui->textBrowser->append(tr("Basic: Went forward: v= %1, t= %2").arg(v).arg(t));
+}
+
+void SCADA::BasicTurn(double a, double t){
+    ui->textBrowser->append(tr("Basic: Turned: a= %1, t= %2").arg(a).arg(t));
+}
+
+void SCADA::BasicTurnArc(bool dir1, bool dir2, double w1, double w2){
+    ui->textBrowser->append(tr("Basic: Turned: arc: dir1=%1, dir2 =%2, w1=%3, w2=%4").arg(dir1).arg(dir2).arg(w1).arg(w2));
+}
+
+///START SEQ.
 void SCADA::StartAll(){
-    ui->textBrowser->append(tr("ROBOT STARTED"));
-}                            //10
-void SCADA::Drive(double v, double t){
-    ui->textBrowser->append(tr("Robot drove for t= %1, v=%2").arg(t).arg(v));
-}       //11
-void SCADA::Turn(double angle, double t){
-    ui->textBrowser->append(tr("Robot turned for t= %1, a=%2").arg(t).arg(angle));
-}    //12
-//niestandardowej brak                      //13
-void SCADA::StopDriving(){
-    ui->textBrowser->append(tr("Stopped driving"));
-}                         //14
-void SCADA::Dig(){
-    ui->textBrowser->append(tr("Digging"));
-}                                 //15
-void SCADA::CylinderMove(double w){
-    ui->textBrowser->append(tr("Cylinder moved with speed").arg(w));
-}                        //16
-void SCADA::Calibrate(){
-    ui->textBrowser->append(tr("Tensors calibrated"));
-}                           //17
-void SCADA::CylinderToGround(double w){
-    ui->textBrowser->append(tr("Cylinder set to the grounf with speed %1").arg(w));
-}                    //18
-void SCADA::SetMaxCurrentVoltage(double U, double I){
-    ui->textBrowser->append(tr("Umax = %1, Imax= %2").arg(U).arg(I));
-}                //19
-//pilnuj koniec brak                        //20
-void SCADA::MassChange(double m){
-    ui->textBrowser->append(tr("Current mass %1").arg(m));
-}                         //21
+    ui->textBrowser->append(tr("Start sequence"));
+}
+
+////MINING SEQ
+void SCADA::MiningInitiate(){
+    ui->textBrowser->append(tr("Mining: initiated"));
+}
+
+void SCADA::MiningCylinderState(bool opened){
+    ui->textBrowser->append(tr("Mining:Cylinder is opened:").arg(opened));
+}
+
+void SCADA::MiningArmPosition4(){
+    ui->textBrowser->append(tr("Mining: Arm position: 4,"));
+}
+
+void SCADA::MiningCylinderStart(){
+    ui->textBrowser->append(tr("Mining: Cylinder started"));
+}
+
+void SCADA::MiningCalibration() {
+    ui->textBrowser->append(tr("Mining: Calibration"));
+}
+
+void SCADA::MiningCylinderToGround(double w){
+    ui->textBrowser->append(tr("Mining: Cylinder set to ground: %1").arg(w));
+}
+
+void SCADA::MiningPowerControl(double U, double I){
+    ui->textBrowser->append(tr("Mining: Power control: U=%1, I=%2").arg(U).arg(I));
+}
+
+void SCADA::MiningDriving(){
+    ui->textBrowser->append(tr("Mining: Driving"));
+}
+
+//check args
+void SCADA::MiningTensometerMass(){
+    ui->textBrowser->append(tr("Mining: loaded mass: "));
+}
+
+void SCADA::MiningArmPosition1(){
+    ui->textBrowser->append(tr("Mining: Arm position: 0"));
+}
+
+
+///UNLOAD SEQ
+void SCADA::UnloadInitiate(){
+    ui->textBrowser->append(tr("Unload: Initiated"));
+}
+
+void SCADA::UnloadArmPosition1(){
+    ui->textBrowser->append(tr("Unload: Arm position: 1"));
+}
+
+void SCADA::UnloadCylinderToZero(double w){
+    ui->textBrowser->append(tr("Unload: Cylinder to zero, w=%1").arg(w));
+}
+
+void SCADA::UnloadCylinderOpen(){
+    ui->textBrowser->append(tr("Unload: Cylinder Opened"));
+}
+
+void SCADA::UnloadCylinderState(bool opened){
+    ui->textBrowser->append(tr("Unload: Cylinder opened: %1").arg(opened));
+}
+
+void SCADA::UnloadCylinderShake(){
+    ui->textBrowser->append(tr("Unload: Cylinder shaking"));
+}
+
+void SCADA::UnloadCylinderRotate(double angle, double w){
+    ui->textBrowser->append(tr("Unload: Cylinder rotated to: a=%1, w=%2").arg(angle).arg(w));
+}
+
+void SCADA::UnloadCylinderClose(){
+    ui->textBrowser->append(tr("Unload: Cylinder closed"));
+}
+
+void SCADA::UnloadArmPositionCheck(){
+    ui->textBrowser->append(tr("Unload: Arm positioned"));
+}
+
+
+///SECURITY SEQ
+void SCADA::SecurityAllEnginesStop(){
+    ui->textBrowser->append(tr("Security: All engines stopped"));
+}
+
+void SCADA::SecurityDrivingEnginesStop(){
+    ui->textBrowser->append(tr("Security: Driving engines stopped"));
+}
+
+void SCADA::SecurityArmEngineStop(){
+    ui->textBrowser->append(tr("Security: Arm engine stopped"));
+}
+
+void SCADA::SecurityCylinderEngineStop(){
+    ui->textBrowser->append(tr("Security: Cylinder engine stopped"));
+}
+
+void SCADA::SecurityAutonomy(){
+    ui->textBrowser->append(tr("Security: Autonomy mode"));
+}
 
 void SCADA::updateImageCam(){
-
+////////cam
 }

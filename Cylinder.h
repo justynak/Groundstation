@@ -41,6 +41,7 @@ protected:
 private:
     double md_weight;
     double md_maxweight;
+    double md_totalweight;
 
     bool mb_flap;
     bool mb_electromagnet;
@@ -91,6 +92,11 @@ private:
 
         void SetCurrent(double I){m_engine.SetCurrent(I);}
         double GetCurrent(){return m_engine.GetCurrent();}
+
+        void AddMass(double w){md_totalweight+=w;}
+        double GetCurrentMass(){return md_totalweight;}
+
+        void Stop(){m_engine.Stop();}
 
 
 

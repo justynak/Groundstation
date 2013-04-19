@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'sciaga.ui'
 **
-** Created: Thu Apr 11 14:32:36 2013
+** Created: Sat Apr 20 00:13:47 2013
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!

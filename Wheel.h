@@ -37,12 +37,15 @@ class Wheel
 
         double SetEngineSpeed(double w){m_engine.SetAnVelocity(w);}
         double SetEngineVoltage(double U){m_engine.SetVoltage(U);}
+        double SetEngineMaxVoltage(double Umax){m_engine.SetMaxVoltage(Umax);}
         double SetEngineCurrent(double I){m_engine.SetCurrent(I);}
         double SetEngineMaxCurrent(double Imax){m_engine.SetMaxCurrent(Imax);}
 
         double GetEngineVoltage(){}
         double GetEngineCurrent(){}
         double GetEngineSpeed(){}
+
+        void Stop(){m_engine.Stop();}
 
 
     protected:

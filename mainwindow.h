@@ -37,15 +37,15 @@ public:
 
 
 public slots:
-    void BasicChangValues();                         //1
+    void BasicChangeValues();                        //1
     void BasicEngineSteer(int i, double w);          //2
-    void BasicEngineDrivingSteer(int i, double w);   //3    ARG?
+    void BasicEngineDrivingSteer(int i, double w);   //3
     void BasicCylinderSetToZero(double w);           //4
     void BasicArmPositionChange(POSITION pos);       //5
-    void BasicElectromagnet(bool on);                //6
+    void BasicElectromagnetSet();                //6
     void BasicDriveForward(double v, double t);      //7
     void BasicTurn(double a, double t);              //8
-    void BasicTurnArc();                             //9    ARG?
+    void BasicTurnArc();//9    ARG?
 
     ///START SEQ.
     void StartAll();                                 //20
@@ -56,20 +56,20 @@ public slots:
     void MiningArmPosition4();                       //32
     void MiningCylinderStart();                      //33
     void MiningCalibration() ;                       //34
-    void MiningCylinderToGround();                   //35
-    void MiningPowerControl();                       //36
+    void MiningCylinderToGround(double w);           //35
+    void MiningPowerControl(double U, double I);     //36
     void MiningDriving();                            //37
-    void MiningTensometerMass(double mass);          //38
-    void MiningArmPosition0();                       //39
+    void MiningTensometerMass();                     //38
+    void MiningArmPosition1();                       //39
 
     ///UNLOAD SEQ
     void UnloadInitiate();                           //40
     void UnloadArmPosition1();                       //41
-    void UnloadCylinderToZero();                     //42
+    void UnloadCylinderToZero(double w);             //42
     void UnloadCylinderOpen();                       //43
-    void UnloadWheelState(bool opened);              //44
+    void UnloadCylinderState(bool opened);           //44
     void UnloadCylinderShake();                      //45
-    void UnloadWheelRotate();                        //46
+    void UnloadCylinderRotate(double angle, double w);//46
     void UnloadCylinderClose();                      //47
     void UnloadArmPositionCheck();                   //48    ARG?
 

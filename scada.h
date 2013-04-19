@@ -41,27 +41,50 @@ private:
     QTimer* tup;
 
 public slots:
-    void UpdateValues();
-    void EngineSteer(int i, double w);                     //2
-    //wysteruj silniki jezdne brak               //3
-    void EngineStop(int i);                      //4
-    void CylinderToZero(double w);                       //5
-    void ArmPosition(POSITION pos);           //6
-    void SetElectromagnet(bool on) ;                    //7
-    void TeleoperationOn();                      //8
-    void StopAll();                              //9
-    void StartAll();                            //10
-    void Drive(double v, double t);       //11
-    void Turn(double angle, double t);    //12
-    //niestandardowej brak                      //13
-    void StopDriving();                         //14
-    void Dig();                                 //15
-    void CylinderMove(double w);                        //16
-    void Calibrate();                           //17
-    void CylinderToGround(double w);                    //18
-    void SetMaxCurrentVoltage(double U, double I);                //19
-    //pilnuj koniec brak                        //20
-    void MassChange(double m);                         //21
+    ////BASIC SEQ.
+     void BasicChangeValues();                         //1
+     void BasicEngineSteer(int i, double w);          //2
+     void BasicEngineDrivingSteer(int i, double w);   //3    ARG?
+     void BasicCylinderSetToZero(double w);           //4
+     void BasicArmPositionChange(POSITION pos);       //5
+     void BasicElectromagnetSet(bool on);                //6
+     void BasicDriveForward(double v, double t);      //7
+     void BasicTurn(double a, double t);              //8
+     void BasicTurnArc(bool dir1, bool dir3, double w1, double w2);//9    ARG?
+
+     ///START SEQ.
+     void StartAll();                                 //20
+
+     ////MINING SEQ
+     void MiningInitiate();                           //30
+     void MiningCylinderState(bool opened);           //31     ARG?
+     void MiningArmPosition4();                       //32
+     void MiningCylinderStart();                      //33
+     void MiningCalibration() ;                       //34
+     void MiningCylinderToGround(double w);           //35
+     void MiningPowerControl(double U, double I);     //36
+     void MiningDriving();                            //37
+     void MiningTensometerMass();                     //38
+     void MiningArmPosition1();                       //39
+
+     ///UNLOAD SEQ
+     void UnloadInitiate();                           //40
+     void UnloadArmPosition1();                       //41
+     void UnloadCylinderToZero(double w);             //42
+     void UnloadCylinderOpen();                       //43
+     void UnloadCylinderState(bool opened);           //44
+     void UnloadCylinderShake();                      //45
+     void UnloadCylinderRotate(double angle, double w);//46
+     void UnloadCylinderClose();                      //47
+     void UnloadArmPositionCheck();                   //48
+
+     ///SECURITY SEQ
+     void SecurityAllEnginesStop();                   //101
+     void SecurityDrivingEnginesStop();               //102
+     void SecurityArmEngineStop();                    //103
+     void SecurityCylinderEngineStop();               //104
+     void SecurityAutonomy();                         //105
+
 
     void updateImageCam();
 

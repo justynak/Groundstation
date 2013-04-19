@@ -11,13 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(ui->buttonQuit, SIGNAL(clicked()), this, SLOT(close()));
+    //connect(ui->buttonQuit, SIGNAL(clicked()), this, SLOT(close()));
     imgUp.load(":/images/dol.png");
     imgSide.load(":/images/bok.png");
     imgMap.load(":/images/map.png");
     imgSmall.load(":/images/small.png");
 
-    ui->labelMap->setPixmap(imgMap);
+    //ui->labelMap->setPixmap(imgMap);
 
     //joy = new Joystick();
 
@@ -40,19 +40,58 @@ MainWindow::MainWindow(QWidget *parent) :
     //    connect(t, SIGNAL(timeout()), this, SLOT(updateValues()));
     //}
 
-
 }
 
 void MainWindow::initialize(){
-   connect(ui->buttonCalibrate, SIGNAL(clicked()), this->robot, SLOT(Calibrate()));
-   connect(ui->buttonHalt, SIGNAL(clicked()), this->robot, SLOT(StopAll()));
-   connect(ui->buttonStop, SIGNAL(clicked()), this->robot, SLOT(StopDriving()));
-   connect(ui->buttonTeleoperation, SIGNAL(clicked()), this, SLOT(TeleoperationOn()));
-   connect(ui->buttonSteer, SIGNAL(clicked()), this, SLOT(EngineSteer()));
-   connect(ui->buttonArmPosition, SIGNAL(clicked()), this, SLOT(SetArmPosition()));
-   connect(ui->buttonKeep, SIGNAL(clicked()), this, SLOT(SetMaxCurrentVoltage()));
-   connect(ui->buttonStart, SIGNAL(clicked()), this->robot, SLOT(StartAll()));
+    //void BasicChangeValues();                        //1
+    connect(ui->button_UpdateValues, SIGNAL(clicked()), this, SLOT(BasicChangeValues()));
+    //void BasicEngineSteer(int i, double w); //2 + void BasicEngineDrivingSteer(int i, double w);   //3
+    connect(ui->button_EngineSteer, SIGNAL(clicked()), this, SLOT(BasicEngineSteer(int,double)));
+    //void BasicCylinderSetToZero(double w);           //4
+    //?
+    //void BasicArmPositionChange(POSITION pos);       //5
+    //keyboard
+    //void BasicElectromagnetSet(bool on);                //6
+    connect(ui->button_Electromagnets, SIGNAL(clicked()), this, SLOT(BasicElectromagnetSet()));
+    //void BasicDriveForward(double v, double t);      //7
+    //keyboard
+    //void BasicTurn(double a, double t);              //8
+    //keyboard
+    //void BasicTurnArc(bool dir1, bool dir3, double w1, double w2);//9
+    connect(ui->button_Arch, SIGNAL(clicked()), this, SLOT(BasicTurnArc()));
+    //void StartAll();                                 //20
 
+
+
+    ////MINING SEQ
+    //void MiningInitiate();                           //30
+    //void MiningCylinderState(bool opened);           //31     ARG?
+    //void MiningArmPosition4();                       //32
+    //void MiningCylinderStart();                      //33
+    //void MiningCalibration() ;                       //34
+    //void MiningCylinderToGround(double w);           //35
+    //void MiningPowerControl(double U, double I);     //36
+    //void MiningDriving();                            //37
+    //void MiningTensometerMass();                     //38
+    //void MiningArmPosition1();                       //39
+
+    ///UNLOAD SEQ
+    //void UnloadInitiate();                           //40
+    //void UnloadArmPosition1();                       //41
+    //void UnloadCylinderToZero(double w);             //42
+    //void UnloadCylinderOpen();                       //43
+    //void UnloadCylinderState(bool opened);           //44
+    //void UnloadCylinderShake();                      //45
+    //void UnloadCylinderRotate(double angle, double w);//46
+    //void UnloadCylinderClose();                      //47
+    //void UnloadArmPositionCheck();                   //48    ARG?
+
+    ///SECURITY SEQ
+    //void SecurityAllEnginesStop();                   //101
+    //void SecurityDrivingEnginesStop();               //102
+    //void SecurityArmEngineStop();                    //103
+    //void SecurityCylinderEngineStop();               //104
+    //void SecurityAutonomy();                         //105
 }
 
 MainWindow::~MainWindow()
@@ -94,12 +133,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     }
 
     if(event->key()==Qt::Key_1){
-        robot->SetArmPosition(a);
+        //robot->SetArmPosition(a);
         //ui->browser->append(tr("Setting arm position to 1"));
     }
 
     if(event->key()==Qt::Key_2){
-        robot->SetArmPosition(b);
+        //robot->SetArmPosition(b);
         //ui->browser->append(tr("Setting arm position to 2"));
     }
 
@@ -126,7 +165,6 @@ void MainWindow::paintEvent(QPaintEvent *){
 }
 
 
-void MainWindow::updateValues(){
     //0 - forward, 1-turn
     //robot->Drive((joy->getAxis(1))*0.2/-32767);
     //robot->Drive((joy->getAxis(3))*0.2/-32767);
@@ -143,75 +181,7 @@ void MainWindow::updateValues(){
     //if(joy->getButton(3)) robot->Drop();
     //ui->browser->append(tr("Dropping"));
 
-}
-
-void MainWindow::EngineSteer(){
-   int i = ui->lineEditSteerNr->text().toInt();
-   int w = ui->lineEditSteerW->text().toDouble();
-   if(w==0) robot->EngineStop(i);
-   else robot->EngineSteer(i,w);
-
-
-    //robot->EngineSteer(i, w);
-}         //2
-//wysteruj silniki jezdne brak               //3
-void MainWindow::EngineStop(){
-   //////////
-}                      //4
-
-void MainWindow::CylinderToZero(){
-    robot->CylinderToZero(0.5);
-}
-//5
-void MainWindow::SetArmPosition(){
-    int pos =  ui->horizontalSliderArmPosition->value();
-    if(pos==0)  robot->SetArmPosition(a);
-    if(pos==1)  robot->SetArmPosition(b);
-    if(pos==2) robot->SetArmPosition(c);
-
-}
-//6
-void MainWindow::SetElectromagnet() {
-    bool on=true;
-    robot->SetElectromagnet(on);
-}             //7
-
-void MainWindow::TeleoperationOn(){
-    robot->TeleoperationOn();
-}                      //8
-
-void MainWindow::StopAll(){
-    robot->StopAll();
-}                              //9
-void MainWindow::StartAll(){
-    robot->StartAll();
-}                             //10
-//void MainWindow::Drive(){}           //11
-//void MainWindow::Turn(){}           //12
-//niestandardowej brak                       //13
-void MainWindow::StopDriving(){
-    robot->StopDriving();
-}                          //14
-//zadeklarowane już{}                                  //15
-void MainWindow::CylinderMove(){
-
-}                 //16
-void MainWindow::Calibrate(){
-
-}                            //17
-void MainWindow::CylinderToGround(){
-
-}             //18
-void MainWindow::SetMaxCurrentVoltage(){
-    double U = ui->lineEditKeepU->text().toDouble();
-    double I=ui->lineEditKeepI->text().toDouble();
-    robot->SetMaxCurrentVoltage(U,I);
-}//19
-//pilnuj koniec brak                         //20
-void MainWindow::MassChange(){
-    ////////////
-}                   //21
-
+                  //21
 void MainWindow::updateCamImage(){
     cv::Mat mat;
     cam>>mat;
@@ -224,10 +194,54 @@ void MainWindow::updateCamImage(){
 
 }
 
+
 void MainWindow::updateTime(){
     if(seconds>=0){
-        ui->lcdTimer->display(seconds);
+        //ui->lcdTimer->display(seconds);
         --seconds;}
     else
         t_counter->stop();
 }
+
+void MainWindow::BasicChangeValues(){}                        //1
+void MainWindow::BasicEngineSteer(int i, double w){}          //2
+void MainWindow::BasicEngineDrivingSteer(int i, double w){}   //3
+void MainWindow::BasicCylinderSetToZero(double w){}           //4
+void MainWindow::BasicArmPositionChange(POSITION pos){}       //5
+void MainWindow::BasicElectromagnetSet(){}                //6
+void MainWindow::BasicDriveForward(double v, double t){}      //7
+void MainWindow::BasicTurn(double a, double t){}              //8
+void MainWindow::BasicTurnArc(){}//9    ARG?
+
+///START SEQ.
+void MainWindow::StartAll(){}                                 //20
+
+////MINING SEQ
+void MainWindow::MiningInitiate(){}                           //30
+void MainWindow::MiningCylinderState(bool opened){}           //31     ARG?
+void MainWindow::MiningArmPosition4(){}                       //32
+void MainWindow::MiningCylinderStart(){}                      //33
+void MainWindow::MiningCalibration() {}                       //34
+void MainWindow::MiningCylinderToGround(double w){}           //35
+void MainWindow::MiningPowerControl(double U, double I){}     //36
+void MainWindow::MiningDriving(){}                            //37
+void MainWindow::MiningTensometerMass(){}                     //38
+void MainWindow::MiningArmPosition1(){}                       //39
+
+///UNLOAD SEQ
+void MainWindow::UnloadInitiate(){}                           //40
+void MainWindow::UnloadArmPosition1(){}                       //41
+void MainWindow::UnloadCylinderToZero(double w){}             //42
+void MainWindow::UnloadCylinderOpen(){}                       //43
+void MainWindow::UnloadCylinderState(bool opened){}           //44
+void MainWindow::UnloadCylinderShake(){}                      //45
+void MainWindow::UnloadCylinderRotate(double angle, double w){}//46
+void MainWindow::UnloadCylinderClose(){}                      //47
+void MainWindow::UnloadArmPositionCheck(){}                   //48    ARG?
+
+///SECURITY SEQ
+void MainWindow::SecurityAllEnginesStop(){}                   //101
+void MainWindow::SecurityDrivingEnginesStop(){}               //102
+void MainWindow::SecurityArmEngineStop(){}                    //103
+void MainWindow::SecurityCylinderEngineStop(){}               //104
+void MainWindow::SecurityAutonomy(){}                         //105

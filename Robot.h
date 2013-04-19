@@ -34,33 +34,23 @@ class Robot : public IDiggingSystem, public IDrivingSystem
 
         void SetPosition(double da, double ds); //
         void SetPosition(double* p);
-
         double GetWheelVelocity(int i){return m_wheel[i].GetAngularVelocity();}
         POSITION GetArmPosition(){return(m_arm.GetPosition()) ;}
         double GetCylinderWeight(){return(m_cylinder.GetWeight()) ;}
-
         double GetBatteryCurrent(){return battery->GetCurrent();}
         double GetBatteryVoltage(){return battery->GetVoltage();}
-
         double GetEngineCurrent(int i){return m_wheel[i].GetEngineCurrent();}
         double GetEngineSpeed(int i){return m_wheel[i].GetEngineSpeed();}
-
         double GetCylinderSpeed(){return m_cylinder.GetEngineSpeed();}
         double GetElectromagnet(){return m_cylinder.IsElectroMagnetOn();}
-
         double GetTensometer(){return tensometer[1];}
         void SetTensometer(double t){tensometer[1]=t;}
-
         double GetMass(){return m_cylinder.GetWeight();}
-
-        bool IsTeleoperated(){return teleoperated;}
-
+        bool IsTeleoperated(){return teleoperated;}        
+        void SetMaxCurrentVoltage(double U, double I);
         virtual ~Robot(){}
-
         char* ReceiveFrame(int id);
         void SendFrame(int id, int arg1, int arg2, int arg3);
-
-
 
 private:
         QTcpSocket* socket;
@@ -68,19 +58,17 @@ private:
         Battery* battery;
         bool teleoperated;
 
-
-
 signals:
        ////BASIC SEQ.
         void _BasicChangeValues();                       //1
-        void _BasicEngineSteer(int i, double w);         //2
-        void _BasicEngineDrivingSteer(int i, double w);  //3    ARG?
+        void _BasicEngineSteer(int i, double w);         //2 /////
+        void _BasicEngineDrivingSteer(int i, double w);  //3
         void _BasicCylinderSetToZero(double w);          //4
         void _BasicArmPositionChange(POSITION pos);      //5
         void _BasicElectromagnetSet(bool on);            //6
         void _BasicDriveForward(double v, double t);     //7
         void _BasicTurn(double a, double t);             //8
-        void _BasicTurnArc();                            //9    ARG?
+        void _BasicTurnArc(bool dir1, bool dir3, double w1, double w2); //9    ARG?
 
         ///START SEQ.
         void _StartAll();                                //20
@@ -94,19 +82,19 @@ signals:
         void _MiningCylinderToGround(double w);          //35
         void _MiningPowerControl(double U, double I);    //36
         void _MiningDriving();                           //37
-        void _MiningTensometerMass(double mass);         //38
-        void _MiningArmPosition0();                      //39
+        void _MiningTensometerMass();                    //38
+        void _MiningArmPosition1();                      //39
 
         ///UNLOAD SEQ
         void _UnloadInitiate();                          //40
         void _UnloadArmPosition1();                      //41
-        void _UnloadCylinderToZero();                    //42
+        void _UnloadCylinderToZero(double w);            //42
         void _UnloadCylinderOpen();                      //43
         void _UnloadCylinderState(bool opened);             //44
         void _UnloadCylinderShake();                     //45 HARLEM SHAKE LEL
-        void _UnloadCylinderRotate(double angle);        //46
+        void _UnloadCylinderRotate(double angle, double w);//46
         void _UnloadCylinderClose();                     //47
-        void _UnloadArmPositionCheck();                  //48    ARG?
+        void _UnloadArmPositionCheck();      //48    //position
 
         ///SECURITY SEQ
         void _SecurityAllEnginesStop();                  //101
@@ -116,22 +104,17 @@ signals:
         void _SecurityAutonomy();                        //105
 
 
-
-
-
-
 public slots:
-
         ////BASIC SEQ.
-         void BasicChangeValues();                         //1
+         void BasicChangeValues();                        //1
          void BasicEngineSteer(int i, double w);          //2
-         void BasicEngineDrivingSteer(int i, double w);   //3    ARG?
+         void BasicEngineDrivingSteer(int i, double w);   //3
          void BasicCylinderSetToZero(double w);           //4
          void BasicArmPositionChange(POSITION pos);       //5
-         void BasicElectromagnet(bool on);                //6
+         void BasicElectromagnetSet(bool on);                //6
          void BasicDriveForward(double v, double t);      //7
          void BasicTurn(double a, double t);              //8
-         void BasicTurnArc();                             //9    ARG?
+         void BasicTurnArc(bool dir1, bool dir3, double w1, double w2);//9    ARG?
 
          ///START SEQ.
          void StartAll();                                 //20
@@ -139,14 +122,14 @@ public slots:
          ////MINING SEQ
          void MiningInitiate();                           //30
          void MiningCylinderState(bool opened);           //31     ARG?
-         void MiningArmPosition4(double w);               //32
+         void MiningArmPosition4();                       //32
          void MiningCylinderStart();                      //33
          void MiningCalibration() ;                       //34
          void MiningCylinderToGround(double w);           //35
-         void MiningPowerControl();                       //36
+         void MiningPowerControl(double U, double I);     //36
          void MiningDriving();                            //37
          void MiningTensometerMass();                     //38
-         void MiningArmPosition0(double w);               //39
+         void MiningArmPosition1();                       //39
 
          ///UNLOAD SEQ
          void UnloadInitiate();                           //40
@@ -155,7 +138,7 @@ public slots:
          void UnloadCylinderOpen();                       //43
          void UnloadCylinderState(bool opened);           //44
          void UnloadCylinderShake();                      //45
-         void UnloadCylinderRotate(double angle);         //46
+         void UnloadCylinderRotate(double angle, double w);//46
          void UnloadCylinderClose();                      //47
          void UnloadArmPositionCheck();                   //48    ARG?
 
@@ -166,7 +149,7 @@ public slots:
          void SecurityCylinderEngineStop();               //104
          void SecurityAutonomy();                         //105
 
-
+         void connected();
 };
 
 #endif // ROBOT_H

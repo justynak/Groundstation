@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'scada.h'
 **
-** Created: Thu Apr 11 14:32:43 2013
+** Created: Sat Apr 20 00:13:56 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_SCADA[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      19,   14, // methods
+      35,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,40 +32,71 @@ static const uint qt_meta_data_SCADA[] = {
 
  // slots: signature, parameters, type, tag, flags
        7,    6,    6,    6, 0x0a,
-      26,   22,    6,    6, 0x0a,
-      52,   50,    6,    6, 0x0a,
-      70,   68,    6,    6, 0x0a,
-      97,   93,    6,    6, 0x0a,
-     122,  119,    6,    6, 0x0a,
-     145,    6,    6,    6, 0x0a,
-     163,    6,    6,    6, 0x0a,
-     173,    6,    6,    6, 0x0a,
-     188,  184,    6,    6, 0x0a,
-     217,  209,    6,    6, 0x0a,
-     237,    6,    6,    6, 0x0a,
-     251,    6,    6,    6, 0x0a,
-     257,   68,    6,    6, 0x0a,
-     278,    6,    6,    6, 0x0a,
-     290,   68,    6,    6, 0x0a,
-     319,  315,    6,    6, 0x0a,
-     357,  355,    6,    6, 0x0a,
-     376,    6,    6,    6, 0x0a,
+      31,   27,    6,    6, 0x0a,
+      60,   27,    6,    6, 0x0a,
+      98,   96,    6,    6, 0x0a,
+     133,  129,    6,    6, 0x0a,
+     169,  166,    6,    6, 0x0a,
+     201,  197,    6,    6, 0x0a,
+     238,  234,    6,    6, 0x0a,
+     279,  263,    6,    6, 0x0a,
+     317,    6,    6,    6, 0x0a,
+     328,    6,    6,    6, 0x0a,
+     352,  345,    6,    6, 0x0a,
+     378,    6,    6,    6, 0x0a,
+     399,    6,    6,    6, 0x0a,
+     421,    6,    6,    6, 0x0a,
+     441,   96,    6,    6, 0x0a,
+     476,  472,    6,    6, 0x0a,
+     510,    6,    6,    6, 0x0a,
+     526,    6,    6,    6, 0x0a,
+     549,    6,    6,    6, 0x0a,
+     570,    6,    6,    6, 0x0a,
+     587,    6,    6,    6, 0x0a,
+     608,   96,    6,    6, 0x0a,
+     637,    6,    6,    6, 0x0a,
+     658,  345,    6,    6, 0x0a,
+     684,    6,    6,    6, 0x0a,
+     714,  706,    6,    6, 0x0a,
+     750,    6,    6,    6, 0x0a,
+     772,    6,    6,    6, 0x0a,
+     797,    6,    6,    6, 0x0a,
+     822,    6,    6,    6, 0x0a,
+     851,    6,    6,    6, 0x0a,
+     875,    6,    6,    6, 0x0a,
+     904,    6,    6,    6, 0x0a,
+     923,    6,    6,    6, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_SCADA[] = {
-    "SCADA\0\0UpdateValues()\0i,w\0"
-    "EngineSteer(int,double)\0i\0EngineStop(int)\0"
-    "w\0CylinderToZero(double)\0pos\0"
-    "ArmPosition(POSITION)\0on\0"
-    "SetElectromagnet(bool)\0TeleoperationOn()\0"
-    "StopAll()\0StartAll()\0v,t\0Drive(double,double)\0"
-    "angle,t\0Turn(double,double)\0StopDriving()\0"
-    "Dig()\0CylinderMove(double)\0Calibrate()\0"
-    "CylinderToGround(double)\0U,I\0"
-    "SetMaxCurrentVoltage(double,double)\0"
-    "m\0MassChange(double)\0updateImageCam()\0"
+    "SCADA\0\0BasicChangeValues()\0i,w\0"
+    "BasicEngineSteer(int,double)\0"
+    "BasicEngineDrivingSteer(int,double)\0"
+    "w\0BasicCylinderSetToZero(double)\0pos\0"
+    "BasicArmPositionChange(POSITION)\0on\0"
+    "BasicElectromagnetSet(bool)\0v,t\0"
+    "BasicDriveForward(double,double)\0a,t\0"
+    "BasicTurn(double,double)\0dir1,dir3,w1,w2\0"
+    "BasicTurnArc(bool,bool,double,double)\0"
+    "StartAll()\0MiningInitiate()\0opened\0"
+    "MiningCylinderState(bool)\0"
+    "MiningArmPosition4()\0MiningCylinderStart()\0"
+    "MiningCalibration()\0MiningCylinderToGround(double)\0"
+    "U,I\0MiningPowerControl(double,double)\0"
+    "MiningDriving()\0MiningTensometerMass()\0"
+    "MiningArmPosition1()\0UnloadInitiate()\0"
+    "UnloadArmPosition1()\0UnloadCylinderToZero(double)\0"
+    "UnloadCylinderOpen()\0UnloadCylinderState(bool)\0"
+    "UnloadCylinderShake()\0angle,w\0"
+    "UnloadCylinderRotate(double,double)\0"
+    "UnloadCylinderClose()\0UnloadArmPositionCheck()\0"
+    "SecurityAllEnginesStop()\0"
+    "SecurityDrivingEnginesStop()\0"
+    "SecurityArmEngineStop()\0"
+    "SecurityCylinderEngineStop()\0"
+    "SecurityAutonomy()\0updateImageCam()\0"
 };
 
 void SCADA::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -74,25 +105,41 @@ void SCADA::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void 
         Q_ASSERT(staticMetaObject.cast(_o));
         SCADA *_t = static_cast<SCADA *>(_o);
         switch (_id) {
-        case 0: _t->UpdateValues(); break;
-        case 1: _t->EngineSteer((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 2: _t->EngineStop((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->CylinderToZero((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 4: _t->ArmPosition((*reinterpret_cast< POSITION(*)>(_a[1]))); break;
-        case 5: _t->SetElectromagnet((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 6: _t->TeleoperationOn(); break;
-        case 7: _t->StopAll(); break;
-        case 8: _t->StartAll(); break;
-        case 9: _t->Drive((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 10: _t->Turn((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 11: _t->StopDriving(); break;
-        case 12: _t->Dig(); break;
-        case 13: _t->CylinderMove((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 14: _t->Calibrate(); break;
-        case 15: _t->CylinderToGround((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 16: _t->SetMaxCurrentVoltage((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 17: _t->MassChange((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 18: _t->updateImageCam(); break;
+        case 0: _t->BasicChangeValues(); break;
+        case 1: _t->BasicEngineSteer((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 2: _t->BasicEngineDrivingSteer((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 3: _t->BasicCylinderSetToZero((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 4: _t->BasicArmPositionChange((*reinterpret_cast< POSITION(*)>(_a[1]))); break;
+        case 5: _t->BasicElectromagnetSet((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 6: _t->BasicDriveForward((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 7: _t->BasicTurn((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 8: _t->BasicTurnArc((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< double(*)>(_a[3])),(*reinterpret_cast< double(*)>(_a[4]))); break;
+        case 9: _t->StartAll(); break;
+        case 10: _t->MiningInitiate(); break;
+        case 11: _t->MiningCylinderState((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: _t->MiningArmPosition4(); break;
+        case 13: _t->MiningCylinderStart(); break;
+        case 14: _t->MiningCalibration(); break;
+        case 15: _t->MiningCylinderToGround((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 16: _t->MiningPowerControl((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 17: _t->MiningDriving(); break;
+        case 18: _t->MiningTensometerMass(); break;
+        case 19: _t->MiningArmPosition1(); break;
+        case 20: _t->UnloadInitiate(); break;
+        case 21: _t->UnloadArmPosition1(); break;
+        case 22: _t->UnloadCylinderToZero((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 23: _t->UnloadCylinderOpen(); break;
+        case 24: _t->UnloadCylinderState((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 25: _t->UnloadCylinderShake(); break;
+        case 26: _t->UnloadCylinderRotate((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 27: _t->UnloadCylinderClose(); break;
+        case 28: _t->UnloadArmPositionCheck(); break;
+        case 29: _t->SecurityAllEnginesStop(); break;
+        case 30: _t->SecurityDrivingEnginesStop(); break;
+        case 31: _t->SecurityArmEngineStop(); break;
+        case 32: _t->SecurityCylinderEngineStop(); break;
+        case 33: _t->SecurityAutonomy(); break;
+        case 34: _t->updateImageCam(); break;
         default: ;
         }
     }
@@ -130,9 +177,9 @@ int SCADA::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 19)
+        if (_id < 35)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 19;
+        _id -= 35;
     }
     return _id;
 }

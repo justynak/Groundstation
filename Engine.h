@@ -59,6 +59,10 @@ class Engine
         double GetCurrent(){return md_current;}
         double SetCurrent(double I){md_current=I;}
 
+        void Stop(){
+            md_anvelocity=0;
+        }
+
     private:
         double md_voltage;
         double md_maxvoltage;
