@@ -4,7 +4,8 @@
 #include<QTimer>
 
 
-int seconds = 600;
+int seconds = 0;
+int mins = 10;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -275,9 +276,29 @@ void MainWindow::updateCamImage(){
 
 
 void MainWindow::updateTime(){
-    if(seconds>=0){
-        //ui->lcdTimer->display(seconds);
-        --seconds;}
+    if(mins==10){
+        ui->lcdNumber_RemainingTime->display(tr("%1:0%2").arg(mins).arg(seconds));
+        seconds=59;
+        --mins;
+    }
+
+    else if(mins>=0){
+
+        if(seconds==0){
+            ui->lcdNumber_RemainingTime->display(tr("0%1:0%2").arg(mins).arg(seconds));
+            seconds=59;
+            --mins;
+        }
+        else if(seconds < 10){
+            ui->lcdNumber_RemainingTime->display(tr("0%1:0%2").arg(mins).arg(seconds));
+            --seconds;
+            }
+        else{
+            ui->lcdNumber_RemainingTime->display(tr("0%1:%2").arg(mins).arg(seconds));
+            --seconds;
+
+        }
+    }
     else
         t_counter->stop();
 }
