@@ -145,7 +145,7 @@ void MainWindow::initialize(){
     //void MiningArmPosition1();                       //39
     connect(ui->button_Mining_ArmPositionTo1, SIGNAL(clicked()), this, SLOT(MiningArmPosition1()));
     //void UnloadInitiate();                           //40
-    //connect(ui->button_Unloading_Initiate, SIGNAL(clicked()), this, SLOT(UnloadInitiate()));
+    connect(ui->button_Unloading_Initiate, SIGNAL(clicked()), this, SLOT(UnloadInitiate()));
     //void UnloadArmPosition1();                       //41
     connect(ui->button_Unloading_SetArmPosition1, SIGNAL(clicked()), this, SLOT(UnloadArmPosition1()));
     //void UnloadCylinderToZero(double w);             //42
@@ -393,11 +393,12 @@ void MainWindow::MiningInitiate(){
     ui->checkBox_Mining_TensometerMass->setCheckable(true);
     ui->button_Mining_ArmPosition4->setEnabled(true);
     ui->button_Mining_CheckCylinderState->setEnabled(true);
-     ui->button_Mining_ArmPositionTo1->setEnabled(true);
+    ui->button_Mining_ArmPositionTo1->setEnabled(true);
     ui->button_Mining_MiningDriving->setEnabled(true);
     ui->button_Mining_SetCylinderTo0->setEnabled(true);
     ui->button_Mining_StartCylinder->setEnabled(true);
     ui->button_Mining_Initiate->setDisabled(true);
+    ui->button_Mining_TensometerMass->setEnabled(true);
 
     //disable unloading
     ui->checkBox_Unloading_CheckArmPosition->setCheckable(false);
@@ -454,24 +455,26 @@ void MainWindow::MiningDriving(){
 }                            //37
 void MainWindow::MiningTensometerMass(){
     robot->MiningTensometerMass();
+    ui->checkBox_Mining_TensometerMass->setChecked(true);
 }                     //38
 void MainWindow::MiningArmPosition1(){
     robot->MiningArmPosition1();
     ui->checkBox_Mining_SetArmPosition1->setChecked(true);
+    ui->button_Unloading_Initiate->setEnabled(true);
 }                       //39
 
 ///UNLOAD SEQ
 void MainWindow::UnloadInitiate(){
     //disable mining
     //uncheck boxes
-    ui->checkBox_Mining_ArmPosition4->setChecked(false);
-    ui->checkBox_Mining_CloseCylinder->setChecked(false);
-    ui->checkBox_Mining_MiningDriving->setChecked(false);
-    ui->checkBox_Mining_SetArmPosition1->setChecked(false);
-    ui->checkBox_Mining_SetCylinderTo0->setChecked(false);
-    ui->checkBox_Mining_StartCylinder->setChecked(false);
-    ui->checkBox_Mining_TensometerMass->setChecked(false);
-    ui->button_Mining_ArmPosition4->setEnabled(false);
+    ui->checkBox_Mining_ArmPosition4->setCheckable(false);
+    ui->checkBox_Mining_CloseCylinder->setCheckable(false);
+    ui->checkBox_Mining_MiningDriving->setCheckable(false);
+    ui->checkBox_Mining_SetArmPosition1->setCheckable(false);
+    ui->checkBox_Mining_SetCylinderTo0->setCheckable(false);
+    ui->checkBox_Mining_StartCylinder->setCheckable(false);
+    ui->checkBox_Mining_TensometerMass->setCheckable(false);
+
     //disable buttons&checkes
     ui->button_Mining_CheckCylinderState->setEnabled(false);
     ui->button_Mining_Initiate->setEnabled(false);
@@ -480,6 +483,7 @@ void MainWindow::UnloadInitiate(){
     ui->button_Mining_StartCylinder->setEnabled(false);
     ui->button_Mining_ArmPositionTo1->setEnabled(false);
     ui->button_Mining_ArmPosition4->setEnabled(false);
+    ui->button_Mining_TensometerMass->setEnabled(false);
 
     //enable unloading
     ui->button_Unloading_CheckArmPosition->setEnabled(true);
@@ -501,6 +505,7 @@ void MainWindow::UnloadInitiate(){
 
     //disable button
     ui->button_Mining_Initiate->setDisabled(true);
+    ui->button_Unloading_Initiate->setDisabled(true);
 
 }                           //40
 void MainWindow::UnloadArmPosition1(){

@@ -29,7 +29,7 @@ Robot::Robot(double x, double y, double a, QObject *parent){
             teleoperated=true;
 
             socket = new QTcpSocket(this);
-            socket->connectToHost(QString("192.168.0.2"), 2000);
+            socket->connectToHost(QString("192.168.5.2"), 2000); //5==1
             connect(socket, SIGNAL(connected()), this, SLOT(connected()));
 
         }
@@ -92,6 +92,7 @@ void Robot::BasicChangeValues(){
     SendFrame(1,0, 1,0);
     char* bl = new char[4];
     bl = ReceiveFrame(1);
+    if(bl==NULL) return;
     this->battery->SetVoltage((double)(((int)bl[3])/256*20)); //setvoltage
     this->battery->SetCurrent((double)(((int)bl[2])/256*1));  //setcurrent
     socket->flush();
@@ -99,24 +100,28 @@ void Robot::BasicChangeValues(){
     //CYLINDER CURRENT
     SendFrame(1,0,2,0);
     bl = ReceiveFrame(1);
+    if(bl==NULL) return;
     this->m_cylinder.SetCurrent(((int)bl[2])/256*1);
     socket->flush();
 
     //TENSOMETERS-MASS
     SendFrame(1,0,3,0);
     bl= ReceiveFrame(1);
+    if(bl==NULL) return;
     this->m_cylinder.SetWeight((int)(bl[2])/256*10);
     socket->flush();
 
     //TENSOMETERS-VALUES
     SendFrame(1,0,4,0);
     bl= ReceiveFrame(1);
+    if(bl==NULL) return;
     this->SetTensometer((int)(bl[2])/256);
     socket->flush();
 
     //ARM POSITION
     SendFrame(1,0,5,0);
     bl = ReceiveFrame(1);
+    if(bl==NULL) return;
     //this->SetArmPosition(static_cast<POSITION>((int)(bl[2])));
     socket->flush();
 
@@ -124,6 +129,7 @@ void Robot::BasicChangeValues(){
     for(int i=0; i<4; ++i){
          SendFrame(1,0,6,i);
          bl = ReceiveFrame(1);
+         if(bl==NULL) return;
          this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
          socket->flush();
     }
@@ -131,6 +137,7 @@ void Robot::BasicChangeValues(){
     //CYLINDER dir+val
     SendFrame(1,0,7,0);
     bl = ReceiveFrame(1);
+    if(bl==NULL) return;
     this->m_cylinder.SetEngineSpeed((int)bl[3]/255);
     socket->flush();
 
@@ -138,11 +145,12 @@ void Robot::BasicChangeValues(){
     for(int i=0; i<4; ++i){
         SendFrame(1,0,8,i);
         bl = ReceiveFrame(1);
+        if(bl==NULL) return;
          ///impulsy??
         socket->flush();
     }
 
-    //ELECTROMAGNET
+    //ELECTROMAGNET ??
     SendFrame(1,0,9,0);
     bl = ReceiveFrame(1);
     bool val = true;
@@ -429,6 +437,7 @@ void Robot::MiningTensometerMass(){
     SendFrame(38,0,0,0);
     char* bl = new char[4];
     bl = ReceiveFrame(38);
+    if(bl==NULL) return;
     double mass = bl[1];
     //m_cylinder.AddMass(w);
     m_cylinder.SetWeight(mass);
@@ -534,6 +543,7 @@ void Robot::UnloadArmPositionCheck(){
     SendFrame(48,0,8,0);
     char* bl = new char[4];
     bl = ReceiveFrame(48);
+    if (bl==NULL) return;
     if(bl[2]!= (char)1)
         BasicArmPositionChange(b);
     emit _UnloadArmPositionCheck();
@@ -597,8 +607,9 @@ void Robot::SecurityAutonomy(){
     SendFrame(105,0,0,0);
     char* bl = new char[4];
     bl = ReceiveFrame(105);
+    if(bl==NULL) return;
     if(bl[2]!=(char)1)
-        SecurityAutonomy();
+        //SecurityAutonomy();
     emit _SecurityAutonomy();
     delete bl;
 }
