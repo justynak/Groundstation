@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Apr 20 01:06:46 2013
+** Created: Sat Apr 20 02:23:32 2013
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -142,8 +142,8 @@ public:
     QFrame *line;
     QPushButton *button_StartAll;
     QPushButton *button_Teleoperation;
-    QLineEdit *lineEdit_CylinderSpeed;
-    QLabel *label_31;
+    QLineEdit *lineEdit_Unloading_CylinderSpeed;
+    QLineEdit *lineEdit_Unloading_CylinderAngle;
     QMenuBar *menubar;
     QStatusBar *statusbar;
     QToolBar *toolBar;
@@ -548,12 +548,12 @@ public:
         button_Teleoperation = new QPushButton(centralwidget);
         button_Teleoperation->setObjectName(QString::fromUtf8("button_Teleoperation"));
         button_Teleoperation->setGeometry(QRect(660, 640, 121, 41));
-        lineEdit_CylinderSpeed = new QLineEdit(centralwidget);
-        lineEdit_CylinderSpeed->setObjectName(QString::fromUtf8("lineEdit_CylinderSpeed"));
-        lineEdit_CylinderSpeed->setGeometry(QRect(750, 70, 41, 21));
-        label_31 = new QLabel(centralwidget);
-        label_31->setObjectName(QString::fromUtf8("label_31"));
-        label_31->setGeometry(QRect(680, 70, 66, 17));
+        lineEdit_Unloading_CylinderSpeed = new QLineEdit(centralwidget);
+        lineEdit_Unloading_CylinderSpeed->setObjectName(QString::fromUtf8("lineEdit_Unloading_CylinderSpeed"));
+        lineEdit_Unloading_CylinderSpeed->setGeometry(QRect(960, 620, 31, 21));
+        lineEdit_Unloading_CylinderAngle = new QLineEdit(centralwidget);
+        lineEdit_Unloading_CylinderAngle->setObjectName(QString::fromUtf8("lineEdit_Unloading_CylinderAngle"));
+        lineEdit_Unloading_CylinderAngle->setGeometry(QRect(1000, 620, 31, 21));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -616,8 +616,8 @@ public:
         label_4->setText(QApplication::translate("MainWindow", "Arch", 0, QApplication::UnicodeUTF8));
         checkBox_ArchEngineRight->setText(QApplication::translate("MainWindow", "Right", 0, QApplication::UnicodeUTF8));
         checkBox_ArchEngineLeft->setText(QApplication::translate("MainWindow", "Left", 0, QApplication::UnicodeUTF8));
-        lineEdit_ArchEngineRight->setText(QApplication::translate("MainWindow", "1", 0, QApplication::UnicodeUTF8));
-        lineEdit_ArchEngineLeft->setText(QApplication::translate("MainWindow", "1", 0, QApplication::UnicodeUTF8));
+        lineEdit_ArchEngineRight->setText(QString());
+        lineEdit_ArchEngineLeft->setText(QString());
         button_Arch->setText(QApplication::translate("MainWindow", "DO", 0, QApplication::UnicodeUTF8));
         label_5->setText(QApplication::translate("MainWindow", "SECURITY FUNCTIONS", 0, QApplication::UnicodeUTF8));
         button_StopAll->setText(QApplication::translate("MainWindow", "HALT", 0, QApplication::UnicodeUTF8));
@@ -696,7 +696,6 @@ public:
         label_30->setText(QApplication::translate("MainWindow", "MASS", 0, QApplication::UnicodeUTF8));
         button_StartAll->setText(QApplication::translate("MainWindow", "START", 0, QApplication::UnicodeUTF8));
         button_Teleoperation->setText(QApplication::translate("MainWindow", "TELEOPERATION", 0, QApplication::UnicodeUTF8));
-        label_31->setText(QApplication::translate("MainWindow", "Cyl speed", 0, QApplication::UnicodeUTF8));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
         toolBar_2->setWindowTitle(QApplication::translate("MainWindow", "toolBar_2", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

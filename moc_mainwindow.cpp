@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sat Apr 20 01:05:44 2013
+** Created: Sat Apr 20 02:24:26 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -32,66 +32,64 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x0a,
-      36,   32,   11,   11, 0x0a,
-      65,   32,   11,   11, 0x0a,
-     103,  101,   11,   11, 0x0a,
-     138,  134,   11,   11, 0x0a,
-     174,  171,   11,   11, 0x0a,
-     206,  202,   11,   11, 0x0a,
-     243,  239,   11,   11, 0x0a,
-     284,  268,   11,   11, 0x0a,
-     322,   11,   11,   11, 0x0a,
-     333,   11,   11,   11, 0x0a,
-     357,  350,   11,   11, 0x0a,
-     383,   11,   11,   11, 0x0a,
-     404,   11,   11,   11, 0x0a,
-     426,   11,   11,   11, 0x0a,
-     446,  101,   11,   11, 0x0a,
-     481,  477,   11,   11, 0x0a,
-     515,   11,   11,   11, 0x0a,
-     531,   11,   11,   11, 0x0a,
-     554,   11,   11,   11, 0x0a,
-     575,   11,   11,   11, 0x0a,
+      32,   11,   11,   11, 0x0a,
+      51,   11,   11,   11, 0x0a,
+      79,   77,   11,   11, 0x0a,
+     114,  110,   11,   11, 0x0a,
+     147,   11,   11,   11, 0x0a,
+     175,  171,   11,   11, 0x0a,
+     212,  208,   11,   11, 0x0a,
+     237,   11,   11,   11, 0x0a,
+     252,   11,   11,   11, 0x0a,
+     263,   11,   11,   11, 0x0a,
+     280,   11,   11,   11, 0x0a,
+     302,   11,   11,   11, 0x0a,
+     323,   11,   11,   11, 0x0a,
+     345,   11,   11,   11, 0x0a,
+     365,   77,   11,   11, 0x0a,
+     393,   11,   11,   11, 0x0a,
+     414,   11,   11,   11, 0x0a,
+     430,   11,   11,   11, 0x0a,
+     453,   11,   11,   11, 0x0a,
+     474,   11,   11,   11, 0x0a,
+     491,   11,   11,   11, 0x0a,
+     512,   77,   11,   11, 0x0a,
+     538,   11,   11,   11, 0x0a,
+     566,  559,   11,   11, 0x0a,
      592,   11,   11,   11, 0x0a,
-     613,  101,   11,   11, 0x0a,
-     642,   11,   11,   11, 0x0a,
-     663,  350,   11,   11, 0x0a,
-     689,   11,   11,   11, 0x0a,
-     719,  711,   11,   11, 0x0a,
-     755,   11,   11,   11, 0x0a,
-     777,   11,   11,   11, 0x0a,
-     802,   11,   11,   11, 0x0a,
+     614,   11,   11,   11, 0x0a,
+     637,   11,   11,   11, 0x0a,
+     659,   11,   11,   11, 0x0a,
+     684,   11,   11,   11, 0x0a,
+     709,   11,   11,   11, 0x0a,
+     738,   11,   11,   11, 0x0a,
+     762,   11,   11,   11, 0x0a,
+     791,   11,   11,   11, 0x0a,
+     810,   11,   11,   11, 0x0a,
      827,   11,   11,   11, 0x0a,
-     856,   11,   11,   11, 0x0a,
-     880,   11,   11,   11, 0x0a,
-     909,   11,   11,   11, 0x0a,
-     928,   11,   11,   11, 0x0a,
-     945,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
-    "MainWindow\0\0BasicChangeValues()\0i,w\0"
-    "BasicEngineSteer(int,double)\0"
-    "BasicEngineDrivingSteer(int,double)\0"
+    "MainWindow\0\0BasicChangeValues()\0"
+    "BasicEngineSteer()\0BasicEngineDrivingSteer()\0"
     "w\0BasicCylinderSetToZero(double)\0pos\0"
-    "BasicArmPositionChange(POSITION)\0on\0"
-    "BasicElectromagnetSet(bool)\0v,t\0"
+    "BasicArmPositionChange(POSITION)\0"
+    "BasicElectromagnetSet()\0v,t\0"
     "BasicDriveForward(double,double)\0a,t\0"
-    "BasicTurn(double,double)\0dir1,dir3,w1,w2\0"
-    "BasicTurnArc(bool,bool,double,double)\0"
-    "StartAll()\0MiningInitiate()\0opened\0"
-    "MiningCylinderState(bool)\0"
-    "MiningArmPosition4()\0MiningCylinderStart()\0"
-    "MiningCalibration()\0MiningCylinderToGround(double)\0"
-    "U,I\0MiningPowerControl(double,double)\0"
-    "MiningDriving()\0MiningTensometerMass()\0"
-    "MiningArmPosition1()\0UnloadInitiate()\0"
-    "UnloadArmPosition1()\0UnloadCylinderToZero(double)\0"
-    "UnloadCylinderOpen()\0UnloadCylinderState(bool)\0"
-    "UnloadCylinderShake()\0angle,w\0"
-    "UnloadCylinderRotate(double,double)\0"
+    "BasicTurn(double,double)\0BasicTurnArc()\0"
+    "StartAll()\0MiningInitiate()\0"
+    "MiningCylinderState()\0MiningArmPosition4()\0"
+    "MiningCylinderStart()\0MiningCalibration()\0"
+    "MiningCylinderToGround(int)\0"
+    "MiningPowerControl()\0MiningDriving()\0"
+    "MiningTensometerMass()\0MiningArmPosition1()\0"
+    "UnloadInitiate()\0UnloadArmPosition1()\0"
+    "UnloadCylinderToZero(int)\0"
+    "UnloadCylinderOpen()\0opened\0"
+    "UnloadCylinderState(bool)\0"
+    "UnloadCylinderShake()\0UnloadCylinderRotate()\0"
     "UnloadCylinderClose()\0UnloadArmPositionCheck()\0"
     "SecurityAllEnginesStop()\0"
     "SecurityDrivingEnginesStop()\0"
@@ -108,32 +106,32 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
         case 0: _t->BasicChangeValues(); break;
-        case 1: _t->BasicEngineSteer((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 2: _t->BasicEngineDrivingSteer((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 1: _t->BasicEngineSteer(); break;
+        case 2: _t->BasicEngineDrivingSteer(); break;
         case 3: _t->BasicCylinderSetToZero((*reinterpret_cast< double(*)>(_a[1]))); break;
         case 4: _t->BasicArmPositionChange((*reinterpret_cast< POSITION(*)>(_a[1]))); break;
-        case 5: _t->BasicElectromagnetSet((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: _t->BasicElectromagnetSet(); break;
         case 6: _t->BasicDriveForward((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
         case 7: _t->BasicTurn((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
-        case 8: _t->BasicTurnArc((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< double(*)>(_a[3])),(*reinterpret_cast< double(*)>(_a[4]))); break;
+        case 8: _t->BasicTurnArc(); break;
         case 9: _t->StartAll(); break;
         case 10: _t->MiningInitiate(); break;
-        case 11: _t->MiningCylinderState((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 11: _t->MiningCylinderState(); break;
         case 12: _t->MiningArmPosition4(); break;
         case 13: _t->MiningCylinderStart(); break;
         case 14: _t->MiningCalibration(); break;
-        case 15: _t->MiningCylinderToGround((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 16: _t->MiningPowerControl((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 15: _t->MiningCylinderToGround((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 16: _t->MiningPowerControl(); break;
         case 17: _t->MiningDriving(); break;
         case 18: _t->MiningTensometerMass(); break;
         case 19: _t->MiningArmPosition1(); break;
         case 20: _t->UnloadInitiate(); break;
         case 21: _t->UnloadArmPosition1(); break;
-        case 22: _t->UnloadCylinderToZero((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 22: _t->UnloadCylinderToZero((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 23: _t->UnloadCylinderOpen(); break;
         case 24: _t->UnloadCylinderState((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 25: _t->UnloadCylinderShake(); break;
-        case 26: _t->UnloadCylinderRotate((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2]))); break;
+        case 26: _t->UnloadCylinderRotate(); break;
         case 27: _t->UnloadCylinderClose(); break;
         case 28: _t->UnloadArmPositionCheck(); break;
         case 29: _t->SecurityAllEnginesStop(); break;

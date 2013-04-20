@@ -42,7 +42,7 @@ public slots:
     void BasicEngineSteer();          //2
     void BasicEngineDrivingSteer();   //3
     void BasicCylinderSetToZero(double w);           //4
-    void BasicArmPositionChange(int pos);       //5
+    void BasicArmPositionChange(POSITION pos);       //5
     void BasicElectromagnetSet();                //6
     void BasicDriveForward(double v, double t);      //7
     void BasicTurn(double a, double t);              //8

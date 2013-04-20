@@ -423,7 +423,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1</string>
+     <string/>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_ArchEngineLeft">
@@ -436,7 +436,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>1</string>
+     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="button_Arch">
