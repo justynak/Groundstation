@@ -20,8 +20,8 @@ int main(int argc, char *argv[])
     s.initialize();
     s.show();
 
-    Sciaga sciaga;
-    sciaga.show();
+    //Sciaga sciaga;
+    //sciaga.show();
 
     return a.exec();
 }

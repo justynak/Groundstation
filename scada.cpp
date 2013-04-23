@@ -22,6 +22,45 @@ SCADA::SCADA(QWidget *parent) :
 }
 
 void SCADA::initialize(){
+    connect(robot, SIGNAL(_BasicArmPositionChange(POSITION)), this, SLOT(BasicArmPositionChange(POSITION)));
+    connect(robot, SIGNAL(_BasicChangeValues()), this, SLOT(BasicChangeValues()));
+    connect(robot, SIGNAL(_BasicCylinderSetToZero(double)), this, SLOT(BasicCylinderSetToZero(double)));
+    connect(robot, SIGNAL(_BasicDriveForward(double,double)), this, SLOT(BasicDriveForward(double,double)));
+    connect(robot, SIGNAL(_BasicElectromagnetSet(bool)), this, SLOT(BasicElectromagnetSet(bool)));
+    connect(robot, SIGNAL(_BasicEngineDrivingSteer(int,double)), this, SLOT(BasicEngineDrivingSteer(int,double)));
+    connect(robot, SIGNAL(_BasicEngineSteer(int,double)), this, SLOT(BasicEngineSteer(int,double)));
+    connect(robot, SIGNAL(_BasicTurn(double,double)), this, SLOT(BasicTurn(double,double)));
+    connect(robot, SIGNAL(_BasicTurnArc(bool,bool,double,double)), this, SLOT(BasicTurnArc(bool,bool,double,double)));
+
+    //
+    connect(robot, SIGNAL(_MiningArmPosition1()), this, SLOT(MiningArmPosition1()));
+    connect(robot, SIGNAL(_MiningArmPosition4()), this, SLOT(MiningArmPosition4()));
+    connect(robot, SIGNAL(_MiningCalibration()), this, SLOT(MiningCalibration()));
+    connect(robot, SIGNAL(_MiningCylinderStart()), this, SLOT(MiningCylinderStart()));
+    connect(robot, SIGNAL(_MiningCylinderState(bool)), this, SLOT(MiningCylinderState(bool)));
+    connect(robot, SIGNAL(_MiningCylinderToGround(double)), this, SLOT(MiningCylinderToGround(double)));
+    connect(robot, SIGNAL(_MiningDriving()), this, SLOT(MiningDriving()));
+    connect(robot, SIGNAL(_MiningInitiate()), this, SLOT(MiningInitiate()));
+    connect(robot, SIGNAL(_MiningPowerControl(double,double)), this, SLOT(MiningPowerControl(double,double)));
+    connect(robot, SIGNAL(_MiningTensometerMass()), this, SLOT(MiningTensometerMass()));
+
+    //
+    connect(robot, SIGNAL(_UnloadArmPosition1()), this, SLOT(UnloadArmPosition1()));
+    connect(robot, SIGNAL(_UnloadArmPositionCheck()), this, SLOT(UnloadArmPositionCheck()));
+    connect(robot, SIGNAL(_UnloadCylinderClose()), this, SLOT(UnloadCylinderClose()));
+    connect(robot, SIGNAL(_UnloadCylinderOpen()), this, SLOT(UnloadCylinderOpen()));
+    connect(robot, SIGNAL(_UnloadCylinderRotate(double,double)), this, SLOT(UnloadCylinderRotate(double,double)));
+    connect(robot, SIGNAL(_UnloadCylinderShake()), this, SLOT(UnloadCylinderShake()));
+    connect(robot, SIGNAL(_UnloadCylinderState(bool)), this, SLOT(UnloadCylinderState(bool)));
+    connect(robot, SIGNAL(_UnloadCylinderToZero(double)), this, SLOT(UnloadCylinderToZero(double)));
+    connect(robot, SIGNAL(_UnloadInitiate()), this, SLOT(UnloadInitiate()));
+
+    //
+    connect(robot, SIGNAL(_SecurityAllEnginesStop()), this, SLOT(SecurityAllEnginesStop()));
+    connect(robot, SIGNAL(_SecurityArmEngineStop()), this, SLOT(SecurityArmEngineStop()));
+    connect(robot, SIGNAL(_SecurityAutonomy()), this, SLOT(SecurityAutonomy()));
+    connect(robot, SIGNAL(_SecurityCylinderEngineStop()), this, SLOT(SecurityCylinderEngineStop()));
+    connect(robot, SIGNAL(_SecurityDrivingEnginesStop()), this, SLOT(SecurityDrivingEnginesStop()));
 }
 
 SCADA::~SCADA()

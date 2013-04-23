@@ -104,7 +104,7 @@ void Robot::BasicChangeValues(){
     this->m_cylinder.SetCurrent(((int)bl[2])/256*1);
     socket->flush();
 
-    //TENSOMETERS-MASS
+    //TENSOMETERS-MASS //wartosc x1, wartosc x2???
     SendFrame(1,0,3,0);
     bl= ReceiveFrame(1);
     if(bl==NULL) return;
@@ -122,19 +122,23 @@ void Robot::BasicChangeValues(){
     SendFrame(1,0,5,0);
     bl = ReceiveFrame(1);
     if(bl==NULL) return;
-    //this->SetArmPosition(static_cast<POSITION>((int)(bl[2])));
+    this->m_arm.SetPosition(static_cast<POSITION>(bl[1]));
     socket->flush();
 
     //ENGINE nr+dir+val
-    for(int i=0; i<4; ++i){
+    for(int i=0; i<2; ++i){
+        ///1 4 bity - silnik
          SendFrame(1,0,6,i);
          bl = ReceiveFrame(1);
          if(bl==NULL) return;
-         this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
+         int dir=bl[1];
+        // Wysterowany 1bit- lewy silnik w lewo, 3bit- lewy w prawo, 5bit- prawy w lewo, 7bit- prawy w lewo
+         //this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
          socket->flush();
     }
 
     //CYLINDER dir+val
+    //1 -active, 2-closed
     SendFrame(1,0,7,0);
     bl = ReceiveFrame(1);
     if(bl==NULL) return;
@@ -150,21 +154,27 @@ void Robot::BasicChangeValues(){
         socket->flush();
     }
 
-    //ELECTROMAGNET ??
+    //ELECTROMAGNET
     SendFrame(1,0,9,0);
     bl = ReceiveFrame(1);
     bool val = true;
     //jaki jest warunek na true/false?
-    this->m_cylinder.SetElectromagnet((val));
+    if(val==1)
+        this->m_cylinder.SetElectromagnet(true);
+    else if (val==2)
+        this->m_cylinder.SetElectromagnet(false);
+    else return;
+
     socket->flush();
 
 
     //CYLINDER OPENED
     SendFrame(1,0,10,0);
     bl = ReceiveFrame(1);
-    int vl = true;
-    //jaki warunek na true/false?
-    this->m_cylinder.SetFlap(vl);
+    int vl = bl[1];
+    if(vl==1) this->m_cylinder.SetFlap(true);
+    else if(vl==2) this->m_cylinder.SetFlap(false);
+    else return;
     socket->flush();
 
     delete bl;
@@ -176,8 +186,6 @@ void Robot::BasicChangeValues(){
 void Robot::BasicEngineSteer(int i, double w){
 
     int val = (int)(w*256/5);
-    //emit EngineSteered(i, w);
-
     SendFrame(2, i, val,0);
     char* bl = new char[4];
     bl = ReceiveFrame(2);
@@ -321,8 +329,21 @@ void Robot::BasicTurn(double angle, double t){
 }
 
 //9 Arch DOALL
-void Robot::BasicTurnArc(bool dir1, bool dir3, double w1, double w2){
-    SendFrame(9, 0,0,0);
+          /////1 - silnik bębna, 2- silnik ramienia, 3 - silnik jezdny lewy, 4 - silnik jezdny lewy;
+//lewy, prawy
+void Robot::BasicTurnArc(bool dir1, bool dir2, double w1, double w2){
+
+    //Wysterowany 1bit- lewy silnik w lewo, 3bit- lewy w prawo, 5bit- prawy w lewo, 7bit- prawy w lewo
+    //1- lewy w lewo
+    //4- lewy w prawo
+    //16 - prawy w lewo
+    //64 - prawy w lewo
+    int directions=0;
+    if(dir1==1)directions+=1;
+    else directions+=4;
+    if(dir2==1) directions+=16;
+    else directions+=64;
+    SendFrame(9, directions,(int)(w1*256/5),(int)(w2*256/5));
     char* bl = new char[4];
     bl = ReceiveFrame(9);
     delete bl;
