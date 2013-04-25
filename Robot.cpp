@@ -220,7 +220,7 @@ void Robot::BasicEngineSteer(int i, double w){
 
 //3 Driving Steer Engine
 void Robot::BasicEngineDrivingSteer(int i, double w){
-    int val = (int)(w*255/5);
+    int val = (int)(w);
     //emit EngineSteered(i, w);
     int dir;
     switch(i){
@@ -299,8 +299,8 @@ void Robot::BasicDriveForward(double v, double t){
     double da=0.0;
     Robot::SetPosition(ds,da);
 
-     int vel = static_cast<int>(5*vel); //bo najfajniej się wtedy rusza
-     int tm = static_cast<int>(5*vel);
+     int vel = static_cast<int>(500*v); //bo najfajniej się wtedy rusza
+     int tm = static_cast<int>(500*t);
      //if(vel)
      //10 - lewo, 01 - prawo
      //16 - przod, 1 - tyl
@@ -351,9 +351,10 @@ void Robot::BasicTurn(double angle, double t){
     Robot::SetPosition(ds,da);
     std::cout<<"I have turned to an angle "<<angle<<std::endl;
 
-     int vel = angle;
+    //0-100
+     int vel = (int)(angle*5/9);
     // if(angle<0) angle=angle*(-1);//vel=10 fajnie dziala
-     int tm = (int)(t*5);
+     int tm = (int)(t*500);
      int dir;
      if(vel>0){ dir=16;}
      else {dir=1;  vel=vel*(-1);}
