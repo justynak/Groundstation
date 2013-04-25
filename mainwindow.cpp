@@ -25,10 +25,13 @@ MainWindow::MainWindow(QWidget *parent) :
     signalMapper->setMapping(ui->button_Unloading_SetArmPosition1, a);
     signalMapper->setMapping(ui->button_Unloading_SetCylinderTo0, 1);
 
+     this->setFocus();
+
     //joy = new Joystick();
 
    ////    IP CAM
     ////////  ZAMIAST 0 -> const std::string videoStreamAddress = "http://<username:password>@<ip_address>/video.cgi?.mjpg"; //czy w tym stylu
+    const std::string videoStreamAddress = "http://admin:admin@192.168.1.201/ramdisk/preview.bmp";
     cam.open(0);
     //////////////////////////////////
 
@@ -172,6 +175,19 @@ void MainWindow::initialize(){
     //void SecurityAutonomy();                         //105
     connect(ui->button_Teleoperation, SIGNAL(clicked()), this, SLOT(SecurityAutonomy()));
 
+    ui->lineEdit_ArchEngineLeft->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_ArchEngineRight->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_EngineSteerArm->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_EngineSteerCylinder->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_EngineSteerLeft->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_PowerControlCurrent->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_PowerControlVoltage->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_SteerEngineRight->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_Unloading_CylinderAngle->setFocusPolicy(Qt::NoFocus);
+    ui->lineEdit_Unloading_CylinderSpeed->setFocusPolicy(Qt::NoFocus);
+
+    this->setFocus();
+
 }
 
 MainWindow::~MainWindow()
@@ -184,7 +200,7 @@ MainWindow::~MainWindow()
 void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key()==Qt::Key_W){
         //ui->labelMap->setText(tr("aaa"));
-        robot->Drive(0.5,0.25);
+        robot->BasicDriveForward(0.2,0.01);
         double *p = new double[3];
         for(int i=0; i<3; ++i)
             p[i]=robot->GetPosition()[i];
@@ -193,38 +209,42 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 
     }
     if(event->key()==Qt::Key_D){
-        robot->Turn(-15, 0.25);
+        robot->BasicTurn(-5, 0.2);
         //ui->browser->append(tr("Robot turned to an angle %1").arg(robot->GetPosition()[2]));
     }
     if(event->key()==Qt::Key_A){
-        robot->Turn(15, 0.25);
+        robot->BasicTurn(5, 0.2);
         //ui->browser->append(tr("Robot turned to an angle %1").arg(robot->GetPosition()[2]));
     }
     if(event->key()==Qt::Key_E){
-        robot->Dig();
         //ui->browser->append(tr("Digging"));
     }
     if(event->key()==Qt::Key_Q){
         //ui->browser->append(tr("Dropping"));
-        robot->Drop();
     }
 
     if(event->key()==Qt::Key_S){
-        //ui->browser->append((tr("Going back")));
+        robot->BasicDriveForward(-0.2, 0.2);
     }
 
     if(event->key()==Qt::Key_1){
-        //robot->SetArmPosition(a);
-        //ui->browser->append(tr("Setting arm position to 1"));
+        robot->BasicArmPositionChange(a);
     }
 
     if(event->key()==Qt::Key_2){
-        //robot->SetArmPosition(b);
-        //ui->browser->append(tr("Setting arm position to 2"));
+        robot->BasicArmPositionChange(b);
+    }
+
+    if(event->key()==Qt::Key_3){
+        robot->BasicArmPositionChange(c);
+    }
+
+    if(event->key()==Qt::Key_4){
+        robot->BasicArmPositionChange(d);
     }
 
     if(event->key()==Qt::Key_Escape){
-        //robot->stopAll();
+        robot->SecurityAllEnginesStop();
     }
 }
 

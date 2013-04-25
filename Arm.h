@@ -21,7 +21,7 @@
 
 #include "Engine.h"
 
-enum POSITION  {a=0,b=1,c=2, d=3};
+enum POSITION  {a=1,b=2,c=3, d=4};
 
 class Arm
 {

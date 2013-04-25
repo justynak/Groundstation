@@ -126,7 +126,7 @@ void SCADA::BasicCylinderSetToZero(double w){
 }
 
 void SCADA::BasicArmPositionChange(POSITION pos){
-     ui->textBrowser->append(tr("Basic: Arm changet to position").arg(pos));
+     ui->textBrowser->append(tr("Basic: Arm changed to position %1").arg(pos));
 }
 
 void SCADA::BasicElectromagnetSet(bool on){
@@ -156,7 +156,7 @@ void SCADA::MiningInitiate(){
 }
 
 void SCADA::MiningCylinderState(bool opened){
-    ui->textBrowser->append(tr("Mining:Cylinder is opened:").arg(opened));
+    ui->textBrowser->append(tr("Mining:Cylinder is opened: %1").arg(opened));
 }
 
 void SCADA::MiningArmPosition4(){

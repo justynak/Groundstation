@@ -4,6 +4,7 @@
 #include <cmath>
 #include <QString>
 #include "battery.h"
+#include <QMessageBox>
 
 #define START '#'
 
@@ -29,12 +30,12 @@ Robot::Robot(double x, double y, double a, QObject *parent){
             teleoperated=true;
 
             socket = new QTcpSocket(this);
-            socket->connectToHost(QString("192.168.5.2"), 2000); //5==1
+            socket->connectToHost(QString("192.168.0.1"), 2000);
             connect(socket, SIGNAL(connected()), this, SLOT(connected()));
+            connect(socket, SIGNAL(hostFound()), this, SLOT(connected()));
+            connect(socket, SIGNAL(disconnected()), this, SLOT(connected()));
 
         }
-
-
 
 /////////////////////////////////////
 ///////   Position - odometry  //////
@@ -73,9 +74,6 @@ void Robot::SetPosition(double ds, double da){
 }
 
 
-
-
-
 /////////////////////////////////////////////////////////////
 ////////////////////    SLOTS!!!!!    ///////////////////////
 /////////////////////////////////////////////////////////////
@@ -87,35 +85,37 @@ void Robot::SetPosition(double ds, double da){
 
 //1 Update Values
 void Robot::BasicChangeValues(){
-
+    /*
     //BATTERY
     SendFrame(1,0, 1,0);
     char* bl = new char[4];
     bl = ReceiveFrame(1);
     if(bl==NULL) return;
-    this->battery->SetVoltage((double)(((int)bl[3])/256*20)); //setvoltage
-    this->battery->SetCurrent((double)(((int)bl[2])/256*1));  //setcurrent
+    this->battery->SetVoltage((double)(((int)bl[3])/255*20)); //setvoltage
+    this->battery->SetCurrent((double)(((int)bl[2])/255*1));  //setcurrent
+    std::cout<<"I answered!\n";
     socket->flush();
+
 
     //CYLINDER CURRENT
     SendFrame(1,0,2,0);
     bl = ReceiveFrame(1);
     if(bl==NULL) return;
-    this->m_cylinder.SetCurrent(((int)bl[2])/256*1);
+    this->m_cylinder.SetCurrent(((int)bl[2])/255*1);
     socket->flush();
 
     //TENSOMETERS-MASS //wartosc x1, wartosc x2???
     SendFrame(1,0,3,0);
     bl= ReceiveFrame(1);
     if(bl==NULL) return;
-    this->m_cylinder.SetWeight((int)(bl[2])/256*10);
+    this->m_cylinder.SetWeight((int)(bl[2])/255*10);
     socket->flush();
 
     //TENSOMETERS-VALUES
     SendFrame(1,0,4,0);
     bl= ReceiveFrame(1);
     if(bl==NULL) return;
-    this->SetTensometer((int)(bl[2])/256);
+    this->SetTensometer((int)(bl[2])/255);
     socket->flush();
 
     //ARM POSITION
@@ -123,8 +123,9 @@ void Robot::BasicChangeValues(){
     bl = ReceiveFrame(1);
     if(bl==NULL) return;
     this->m_arm.SetPosition(static_cast<POSITION>(bl[1]));
-    socket->flush();
+    socket->flush();*/
 
+    char* bl = new char[4];
     //ENGINE nr+dir+val
     for(int i=0; i<2; ++i){
         ///1 4 bity - silnik
@@ -133,11 +134,11 @@ void Robot::BasicChangeValues(){
          if(bl==NULL) return;
          int dir=bl[1];
         // Wysterowany 1bit- lewy silnik w lewo, 3bit- lewy w prawo, 5bit- prawy w lewo, 7bit- prawy w lewo
-         //this->m_wheel[(int)(bl[2])].SetAngularVelocity((double)(bl[3])/256); // ??kierunek + nr silnika ??
          socket->flush();
+         std::cout<<"Agreed\n";
     }
 
-    //CYLINDER dir+val
+    /*//CYLINDER dir+val
     //1 -active, 2-closed
     SendFrame(1,0,7,0);
     bl = ReceiveFrame(1);
@@ -158,13 +159,11 @@ void Robot::BasicChangeValues(){
     SendFrame(1,0,9,0);
     bl = ReceiveFrame(1);
     bool val = true;
-    //jaki jest warunek na true/false?
     if(val==1)
         this->m_cylinder.SetElectromagnet(true);
     else if (val==2)
         this->m_cylinder.SetElectromagnet(false);
     else return;
-
     socket->flush();
 
 
@@ -176,20 +175,43 @@ void Robot::BasicChangeValues(){
     else if(vl==2) this->m_cylinder.SetFlap(false);
     else return;
     socket->flush();
-
     delete bl;
-
-    emit _BasicChangeValues();
+    emit _BasicChangeValues();*/
 }
 
 //2 Steer Engine Arm/Cylinder //1-cylinder, 2-arm, 3,4-wheels
 void Robot::BasicEngineSteer(int i, double w){
+//lewy w lewo przod 3*16+4 = 52
+    //lewy w prawo 3*16+8=56
+    //prawy w lewo 68
+    //prawy w prawo 72
+    int dir;
 
-    int val = (int)(w*256/5);
-    SendFrame(2, i, val,0);
+    switch(i){
+    case 1: {
+        if(w>0) dir=20;
+        else dir = 24;
+        break;}
+    case 2: {
+        if(w>0) dir=36;
+        else dir=40;
+        break;}
+    case 3: {
+        if(w>0) dir=52;
+        else dir=56;
+        break;}
+    case 4: {
+        if(w>0) dir = 68;
+        else dir=72;
+        break;}
+
+    }
+
+    int val = (int)(w);
+    SendFrame(2, dir, val,1);
     char* bl = new char[4];
     bl = ReceiveFrame(2);
-
+    if(bl!=NULL) std::cout<<"OK";
     emit _BasicEngineSteer(i,w);
     this->m_wheel[i].SetEngineSpeed(w);
 
@@ -198,12 +220,28 @@ void Robot::BasicEngineSteer(int i, double w){
 
 //3 Driving Steer Engine
 void Robot::BasicEngineDrivingSteer(int i, double w){
-    int val = (int)(w*256/5);
+    int val = (int)(w*255/5);
     //emit EngineSteered(i, w);
-    SendFrame(3, i, val,0);
+    int dir;
+    switch(i){
+        case 1: {
+        if(w>0)
+            dir=52;
+        else
+            dir=56;
+        break;}
+        case 2: {
+            if(w>0)
+                dir=68;
+            else
+                dir=72;
+        break;
+        }
+    }
+
+    SendFrame(3, dir, val,0);
     char* bl = new char[4];
     bl = ReceiveFrame(2);
-
     emit _BasicEngineSteer(i,w);
     this->m_wheel[i].SetEngineSpeed(w);
 
@@ -213,7 +251,7 @@ void Robot::BasicEngineDrivingSteer(int i, double w){
 
 //4 0 Cylinder
 void Robot::BasicCylinderSetToZero(double w){
-    int val = (int)(w*256/5);
+    int val = (int)(w*255/5);
     SendFrame(4,0,w,0);
     char* bl = new char[4];
     bl=ReceiveFrame(4);
@@ -228,10 +266,8 @@ void Robot::BasicArmPositionChange(POSITION pos)
 
      SendFrame(6,0, (int)pos, 0 );
      emit _BasicArmPositionChange(pos);
-
      char* bl = new char[4];
      bl=ReceiveFrame(6);
-
      this->m_arm.SetPosition(pos);
      bl=ReceiveFrame(6);
 
@@ -242,10 +278,8 @@ void Robot::BasicArmPositionChange(POSITION pos)
 void Robot::BasicElectromagnetSet(bool on) {
     //emit Electromagnet(On);
     SendFrame(6, 0, (int)on, 0);
-
     char* bl = new char[4];
     bl= ReceiveFrame(6);
-
     this->m_cylinder.SetElectromagnet(on);
     emit _BasicElectromagnetSet(on);
     delete bl;
@@ -265,9 +299,15 @@ void Robot::BasicDriveForward(double v, double t){
     double da=0.0;
     Robot::SetPosition(ds,da);
 
-     int vel = static_cast<int>(v*256/5); //bo najfajniej się wtedy rusza
-     int tm = static_cast<int>(t*256/5);
-     SendFrame(7, 0, vel, tm);
+     int vel = static_cast<int>(5*vel); //bo najfajniej się wtedy rusza
+     int tm = static_cast<int>(5*vel);
+     //if(vel)
+     //10 - lewo, 01 - prawo
+     //16 - przod, 1 - tyl
+     int dir;
+     if(vel>0) dir=16;
+     else {dir=1;  vel=vel*(-1);}
+     SendFrame(7, dir, vel, tm);
      char* bl = new char[4];
      bl = ReceiveFrame(7);
 
@@ -311,9 +351,14 @@ void Robot::BasicTurn(double angle, double t){
     Robot::SetPosition(ds,da);
     std::cout<<"I have turned to an angle "<<angle<<std::endl;
 
-     int vel = (int)(10); //vel=10 fajnie dziala
-     int tm = (int)(t*256/5);
-     SendFrame(8,0, vel, tm);
+     int vel = angle;
+    // if(angle<0) angle=angle*(-1);//vel=10 fajnie dziala
+     int tm = (int)(t*5);
+     int dir;
+     if(vel>0){ dir=16;}
+     else {dir=1;  vel=vel*(-1);}
+
+     SendFrame(8,dir, vel, tm);
 
      socket->flush();
      char* bl = new char[4];
@@ -328,22 +373,11 @@ void Robot::BasicTurn(double angle, double t){
      delete bl;
 }
 
-//9 Arch DOALL
-          /////1 - silnik bębna, 2- silnik ramienia, 3 - silnik jezdny lewy, 4 - silnik jezdny lewy;
 //lewy, prawy
 void Robot::BasicTurnArc(bool dir1, bool dir2, double w1, double w2){
 
-    //Wysterowany 1bit- lewy silnik w lewo, 3bit- lewy w prawo, 5bit- prawy w lewo, 7bit- prawy w lewo
-    //1- lewy w lewo
-    //4- lewy w prawo
-    //16 - prawy w lewo
-    //64 - prawy w lewo
-    int directions=0;
-    if(dir1==1)directions+=1;
-    else directions+=4;
-    if(dir2==1) directions+=16;
-    else directions+=64;
-    SendFrame(9, directions,(int)(w1*256/5),(int)(w2*256/5));
+
+    //SendFrame(9, dir,(int)(w1*255/5),(int)(w2*255/5));
     char* bl = new char[4];
     bl = ReceiveFrame(9);
     delete bl;
@@ -420,7 +454,7 @@ void Robot::MiningCalibration(){
 
 //35 Lower to ground //wot??
 void Robot::MiningCylinderToGround(double w){
-    int val = (int)(w*256/5);
+    int val = (int)(w*255/5);
     SendFrame(35,0,val,0);
     char* bl = new char[4];
     bl = ReceiveFrame(35);
@@ -431,8 +465,8 @@ void Robot::MiningCylinderToGround(double w){
 
 //36 Power Control
 void Robot::MiningPowerControl(double U, double I){
-    int u = (int)(U*256/5);
-    int i = (int)(I*256/5);
+    int u = (int)(U*255/5);
+    int i = (int)(I*255/5);
 
     SendFrame(36,0,i,u);
     char* bl = new char[4];
@@ -500,7 +534,7 @@ void Robot::UnloadArmPosition1(){
 
 //42 Cylinder pos 0
 void Robot::UnloadCylinderToZero(double w){
-    int val = (int)(w*256/5);
+    int val = (int)(w*255/5);
     SendFrame(42,0,val,0);
     char* bl = new char[4];
     bl = ReceiveFrame(42);
@@ -541,7 +575,7 @@ void Robot::UnloadCylinderShake(){
 
 //46 Cylinder rotate //rotate
 void Robot::UnloadCylinderRotate(double angle, double w){
-    int val = (int)(angle*256/5);
+    int val = (int)(angle*255/5);
     SendFrame(46,0,val,0);
     char* bl = new char[4];
     bl = ReceiveFrame(46);
@@ -580,7 +614,7 @@ void Robot::SecurityAllEnginesStop(){
     SendFrame(101,0,0,0);
     char* bl = new char[4];
     bl = ReceiveFrame(101);
-    for(int i=0; i<4; ++i){
+    for(int i=0; i<2; ++i){
         m_wheel[i].Stop();
     }
     m_arm.Stop();
@@ -595,12 +629,11 @@ void Robot::SecurityDrivingEnginesStop(){
     SendFrame(102,0,0,0);
     char* bl = new char[4];
     bl = ReceiveFrame(102);
-    for(int i=0; i<4; ++i){
+    for(int i=0; i<2; ++i){
         m_wheel[i].Stop();
     }
     emit _SecurityDrivingEnginesStop();
     delete bl;
-
 }
 
 //103 Stop arm eng
@@ -630,7 +663,6 @@ void Robot::SecurityAutonomy(){
     bl = ReceiveFrame(105);
     if(bl==NULL) return;
     if(bl[2]!=(char)1)
-        //SecurityAutonomy();
     emit _SecurityAutonomy();
     delete bl;
 }
@@ -639,37 +671,41 @@ void Robot::SecurityAutonomy(){
  void Robot::SendFrame(int id, int arg1, int arg2, int arg3){
      QByteArray block;
      block.append('#');
-     block.append((QByteArray::number(id, 10)));
-     block.append((QByteArray::number(arg1, 10)));
-     block.append((QByteArray::number(arg2, 10)));
-     block.append((QByteArray::number(arg3, 10)));
+     block.append((char)id);
+     block.append((char)arg1);
+     block.append((char)arg2);
+     block.append((char)arg3);
 
      socket->write(block);
  }
 
  char* Robot::ReceiveFrame(int id){
      char* bl = new char[4];
-     if(!socket->waitForReadyRead(1000)) {delete bl; return 0;}
+     //if(!socket->waitForReadyRead(1000)) {delete bl; return 0;}
      if(!socket->read(bl, 4)) {delete bl; return 0;}   //check if read
      if(bl[0]!='#') {delete bl; return 0;}             //check start sign
-     if(bl[1]!=(char)id)    {delete bl; return 0 ;}
+     for(int i=0; i<4; ++i)
+         std::cout<<bl[i]<<"\t";
+     std::cout<<"\n";
+     //if(bl[1]!=(char)id)    {delete bl; return 0 ;}
      return bl;
 
  }
 
- /////If connected to robot
  void Robot::connected(){
-     std::cout<<"connected\n";
+     std::cout<<"Connected\n";
+     QMessageBox msgBox;
+     msgBox.setText("Connected");
+     msgBox.exec();
  }
 
  void Robot::SetMaxCurrentVoltage(double U, double I){
-     for(int i=0; i<4; ++i){
+     for(int i=0; i<2; ++i){
          m_wheel[i].SetEngineMaxCurrent(I);
          m_wheel[i].SetEngineMaxVoltage(U);
      }
      m_arm.SetEngineMaxCurrent(I);
      m_arm.SetEngineMaxVoltage(U);
-
      m_cylinder.SetMaxCurrent(I);
      m_cylinder.SetMaxVoltage(U);
  }
