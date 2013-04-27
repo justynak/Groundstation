@@ -67,7 +67,7 @@ SCADA::~SCADA()
 {
     delete ui;
     delete tcam;
-    delete tup;
+    //delete tup;
 }
 
 void SCADA::paintEvent(QPaintEvent *){
@@ -95,6 +95,7 @@ void SCADA::BasicChangeValues(){
     ui->sliderBatteryI->setValue(robot->GetBatteryCurrent());
     ui->textBrowser->append(tr("Battery current:%1").arg(robot->GetBatteryCurrent()));
 
+
     ui->sliderBatteryU->setValue(robot->GetBatteryVoltage());
     ui->textBrowser->append(tr("Battery voltage:%1").arg(robot->GetBatteryVoltage()));
 
@@ -111,16 +112,23 @@ void SCADA::BasicChangeValues(){
     ui->textBrowser->append(tr("Engine 1 current: %1").arg(robot->GetEngineCurrent(0)));
 
     ui->sliderEngine1I->setValue(robot->GetEngineCurrent(1));
+    ui->textBrowser->append(tr("Engine 2 current: %1").arg(robot->GetEngineCurrent(1)));
 
     ui->sliderEngine2I->setValue(robot->GetEngineCurrent(2));
+    ui->textBrowser->append(tr("Engine 3 current: %1").arg(robot->GetEngineCurrent(2)));
 
     ui->sliderEngine3I->setValue(robot->GetEngineCurrent(3));
+    ui->textBrowser->append(tr("Engine 4 current: %1").arg(robot->GetEngineCurrent(3)));
 
 
     ui->sliderEngine0w->setValue ( robot->GetEngineSpeed(0));
+    ui->textBrowser->append(tr("Engine 1 speed: %1").arg(robot->GetEngineSpeed(0)));
     ui->sliderEngine1w->setValue ( robot->GetEngineSpeed(1));
+        ui->textBrowser->append(tr("Engine 1 speed: %1").arg(robot->GetEngineSpeed(0)));
     ui->sliderEngine2w->setValue ( robot->GetEngineSpeed(2));
+        ui->textBrowser->append(tr("Engine 1 speed: %1").arg(robot->GetEngineSpeed(0)));
     ui->sliderEngine3w->setValue ( robot->GetEngineSpeed(3));
+        ui->textBrowser->append(tr("Engine 1 speed: %1").arg(robot->GetEngineSpeed(0)));
 
     ui->sliderMass->setValue ( robot->GetCylinderWeight()) ;
     ui->sliderTensometer0->setValue ( robot->GetMass());

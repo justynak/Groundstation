@@ -352,7 +352,6 @@ void MainWindow::StartAll(){
     ui->button_Teleoperation->setEnabled(true);
     ui->button_Unloading_Initiate->setEnabled(true);
     ui->button_UpdateValues->setEnabled(true);
-    ui->button_Mining_ArmPositionTo1->setEnabled(true);
     ui->button_Electromagnets->setEnabled(true);
 
     ui->checkBox_ArchEngineLeft->setCheckable(true);

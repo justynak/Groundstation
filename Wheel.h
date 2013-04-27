@@ -32,7 +32,7 @@ class Wheel
         double GetRadius() {return md_radius;}
 
 
-        void SetAngularVelocity(double val=0, double time=0.5) { md_angVelocity = val;}
+        void SetAngularVelocity(double val=0) { md_angVelocity = val;}
         double GetAngularVelocity(){return md_angVelocity;}
 
         double SetEngineSpeed(double w){m_engine.SetAnVelocity(w);}

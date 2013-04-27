@@ -46,6 +46,12 @@ class Arm
 
         void Stop(){m_engine.Stop();}
 
+        void SetEngineSpeed(double w){m_engine.SetAnVelocity(w);}
+        double GetEngineSpeed(){m_engine.GetAnVelocity();}
+
+        void SetEngineDirection(bool dir){m_engine.SetDirection(dir);}
+        bool GetEngineDirection(){return m_engine.GetDirection();}
+
     protected:
     private:
         POSITION m_position;

@@ -42,11 +42,19 @@ class Robot : public IDiggingSystem, public IDrivingSystem
         double GetBatteryVoltage(){return battery->GetVoltage();}
         double GetEngineCurrent(int i){
             if(i==1) return m_cylinder.GetCurrent();
-            //if(i==2) return m_arm.get
-            return m_wheel[i].GetEngineCurrent();
+            if(i==2) return m_arm.GetEngineCurrent();
+            if(i==3) return m_wheel[0].GetEngineCurrent();
+            if(i==4) return m_wheel[1].GetEngineCurrent();
         }
 
-        double GetEngineSpeed(int i){return m_wheel[i].GetEngineSpeed();}
+        double GetEngineSpeed(int i){
+            switch(i){
+            case 1: return m_cylinder.GetEngineSpeed(); break;
+            case 2: return m_arm.GetEngineSpeed(); break;
+            case 3: return m_wheel[0].GetEngineSpeed(); break;
+            case 4: return m_wheel[1].GetEngineSpeed(); break;
+            }
+        }
         double GetCylinderSpeed(){return m_cylinder.GetEngineSpeed();}
         double GetElectromagnet(){return m_cylinder.IsElectroMagnetOn();}
         double GetTensometer(){return tensometer[1];}
@@ -60,6 +68,8 @@ class Robot : public IDiggingSystem, public IDrivingSystem
 
         STATE GetState(){return state;}
         void SetState(STATE st){state=st;}
+
+        char* bl;
 
 private:
         QTcpSocket* socket;
@@ -163,6 +173,7 @@ public slots:
          void SecurityAutonomy();                         //105
 
          void connected();
+         void not_connected();
 };
 
 #endif // ROBOT_H
