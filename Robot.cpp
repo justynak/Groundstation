@@ -476,7 +476,7 @@ void Robot::BasicTurnArc(bool dir1, bool dir2, double w1, double w2){
     bl = new char[4];
     bl = ReceiveFrame(30);
     emit _MiningInitiate();
-    SetState(MINING);
+    this->SetState(MINING);
 
  }
 
@@ -574,6 +574,7 @@ void Robot::MiningArmPosition1(){
     bl = ReceiveFrame(39);
     m_arm.SetPosition(a);
     emit _MiningArmPosition1();
+    this->SetState(BASIC);
 
 }
 
@@ -587,7 +588,7 @@ void Robot::UnloadInitiate(){
 
     bl = ReceiveFrame(40);
     emit _UnloadInitiate();
-    SetState(UNLOADING);
+    this->SetState(UNLOADING);
 
 }
 
@@ -672,7 +673,7 @@ void Robot::UnloadArmPositionCheck(){
         BasicArmPositionChange(b);
     emit _UnloadArmPositionCheck();
 
-    SetState(BASIC);
+    this->SetState(BASIC);
 }
 
 ///////////////////////////////
@@ -735,7 +736,7 @@ void Robot::SecurityAutonomy(){
     if(bl[2]!=(char)1)
         emit _SecurityAutonomy();
 
-    SetState(AUTONOMY);
+    this->SetState(AUTONOMY);
 
 }
 
