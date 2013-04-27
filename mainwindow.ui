@@ -733,12 +733,12 @@
      <rect>
       <x>830</x>
       <y>150</y>
-      <width>321</width>
+      <width>151</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>INITIATE</string>
+     <string>MANUAL LAUNCH</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -811,12 +811,12 @@
      <rect>
       <x>830</x>
       <y>460</y>
-      <width>321</width>
+      <width>151</width>
       <height>27</height>
      </rect>
     </property>
     <property name="text">
-     <string>INITIATE</string>
+     <string>MANUAL LAUNCH</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_Mining_CloseCylinder">
@@ -1572,6 +1572,32 @@
       <width>31</width>
       <height>21</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_Mining_LaunchAll">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>150</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AUTOMATED LAUNCH</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_Unloading_LaunchAll">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>460</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AUTOMATED LAUNCH</string>
     </property>
    </widget>
   </widget>

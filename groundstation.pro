@@ -45,9 +45,7 @@ FORMS    += mainwindow.ui \
             scada.ui \
             sciaga.ui
 
-
 RESOURCES += src.qrc
-
 
 LIBS += -L$$PWD/../../../../usr/lib/x86_64-linux-gnu/qt4/plugins/designer/ -lqledplugin
 INCLUDEPATH += $$PWD/../../../../usr/lib/qt4/examples/designer/qledplugin

@@ -57,9 +57,9 @@ private:
         bool IsCylinderFull() {if (md_weight==md_maxweight) return true; else return false;};
 
         ///Returns true if the flaps are open
-        bool IsFlapOn() { return mb_flap; }
+        bool IsOpened() { return mb_flap; }
         ///Sets the flaps to be : open-> true
-        void SetFlap(bool val=true) { mb_flap = val; }
+        void Open(bool val=true) { mb_flap = val; }
 
         ///Turns on/off the electromagnet
         void SetElectromagnet(bool val=false){mb_electromagnet = val;}
@@ -98,6 +98,12 @@ private:
 
         void Stop(){m_engine.Stop();}
 
+        //void SetAngularVelocity(double val=0, double time=0.5) { md_angVelocity = val;}
+        //double GetAngularVelocity(){return md_angVelocity;}
+
+
+        double SetEngineDirection(bool dir){m_engine.SetDirection(dir);}
+        double GetEngineDirection(){return m_engine.GetDirection();}
 
 
 };

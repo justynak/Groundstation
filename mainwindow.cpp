@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     signalMapper = new QSignalMapper(this);
     signalMapper->setMapping(ui->button_Mining_SetCylinderTo0, 1);
-    signalMapper->setMapping(ui->button_Mining_ArmPosition4, d);
-    signalMapper->setMapping(ui->button_Mining_ArmPositionTo1, a);
-    signalMapper->setMapping(ui->button_Unloading_SetArmPosition1, a);
     signalMapper->setMapping(ui->button_Unloading_SetCylinderTo0, 1);
 
      this->setFocus();
@@ -142,6 +139,7 @@ void MainWindow::initialize(){
     connect(ui->button_StopCylinder, SIGNAL(clicked()), this, SLOT(SecurityCylinderEngineStop()));
     connect(ui->button_Teleoperation, SIGNAL(clicked()), this, SLOT(SecurityAutonomy()));
 
+    /*
     ui->lineEdit_ArchEngineLeft->setFocusPolicy(Qt::NoFocus);
     ui->lineEdit_ArchEngineRight->setFocusPolicy(Qt::NoFocus);
     ui->lineEdit_EngineSteerArm->setFocusPolicy(Qt::NoFocus);
@@ -152,6 +150,7 @@ void MainWindow::initialize(){
     ui->lineEdit_SteerEngineRight->setFocusPolicy(Qt::NoFocus);
     ui->lineEdit_Unloading_CylinderAngle->setFocusPolicy(Qt::NoFocus);
     ui->lineEdit_Unloading_CylinderSpeed->setFocusPolicy(Qt::NoFocus);
+    */
 
     this->setFocus();
 
@@ -223,7 +222,6 @@ void MainWindow::paintEvent(QPaintEvent *){
     painter.end();
 
 }
-
     //0 - forward, 1-turn
     //robot->Drive((joy->getAxis(1))*0.2/-32767);
     //robot->Drive((joy->getAxis(3))*0.2/-32767);
@@ -240,7 +238,6 @@ void MainWindow::paintEvent(QPaintEvent *){
     //if(joy->getButton(3)) robot->Drop();
     //ui->browser->append(tr("Dropping"));
 
-                  //21
 void MainWindow::updateCamImage(){
     cv::Mat mat;
     cam>>mat;
@@ -569,3 +566,11 @@ void MainWindow::SecurityCylinderEngineStop(){
 void MainWindow::SecurityAutonomy(){
     robot->SecurityAutonomy();
 }                         //105
+
+void MainWindow::MiningLaunchAll(){
+    robot->MiningLaunchAll();
+}
+
+void MainWindow::UnloadLaunchAll(){
+    robot->UnloadLaunchAll();
+}

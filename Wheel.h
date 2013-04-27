@@ -40,10 +40,11 @@ class Wheel
         double SetEngineMaxVoltage(double Umax){m_engine.SetMaxVoltage(Umax);}
         double SetEngineCurrent(double I){m_engine.SetCurrent(I);}
         double SetEngineMaxCurrent(double Imax){m_engine.SetMaxCurrent(Imax);}
+        double SetEngineDirection(bool dir){m_engine.SetDirection(dir);}
 
-        double GetEngineVoltage(){}
-        double GetEngineCurrent(){}
-        double GetEngineSpeed(){}
+        double GetEngineVoltage(){return m_engine.GetVoltage();}
+        double GetEngineCurrent(){return m_engine.GetCurrent();}
+        double GetEngineSpeed(){return m_engine.GetAnVelocity();}
 
         void Stop(){m_engine.Stop();}
 

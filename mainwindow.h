@@ -62,6 +62,7 @@ public slots:
     void MiningDriving();                            //37
     void MiningTensometerMass();                     //38
     void MiningArmPosition1();                       //39
+    void MiningLaunchAll();
 
     ///UNLOAD SEQ
     void UnloadInitiate();                           //40
@@ -73,6 +74,7 @@ public slots:
     void UnloadCylinderRotate();//46
     void UnloadCylinderClose();                      //47
     void UnloadArmPositionCheck();                   //48    ARG?
+    void UnloadLaunchAll();
 
     ///SECURITY SEQ
     void SecurityAllEnginesStop();                   //101

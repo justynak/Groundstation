@@ -93,15 +93,29 @@ void SCADA::paintEvent(QPaintEvent *){
 
 void SCADA::BasicChangeValues(){
     ui->sliderBatteryI->setValue(robot->GetBatteryCurrent());
+    ui->textBrowser->append(tr("Battery current:%1").arg(robot->GetBatteryCurrent()));
+
     ui->sliderBatteryU->setValue(robot->GetBatteryVoltage());
+    ui->textBrowser->append(tr("Battery voltage:%1").arg(robot->GetBatteryVoltage()));
+
     ui->sliderCylinderI->setValue ( robot->GetCylinderWeight());
-    ui->sliderCylinderw->setValue( robot->GetCylinderWeight());
+    ui->textBrowser->append(tr("Mass in cylinder:%1").arg(robot->GetCylinderWeight()));
+
+    ui->sliderCylinderw->setValue( robot->GetCylinderSpeed());
+    ui->textBrowser->append(tr("Cylinder speed:%1").arg(robot->GetCylinderSpeed()));
+
     ui->sliderElectromagnet->setValue (robot->GetElectromagnet() );
+    ui->textBrowser->append(tr("Electromagnets:%1").arg(robot->GetElectromagnet()));
 
     ui->sliderEngine0I->setValue ( robot->GetEngineCurrent(0));
+    ui->textBrowser->append(tr("Engine 1 current: %1").arg(robot->GetEngineCurrent(0)));
+
     ui->sliderEngine1I->setValue(robot->GetEngineCurrent(1));
+
     ui->sliderEngine2I->setValue(robot->GetEngineCurrent(2));
+
     ui->sliderEngine3I->setValue(robot->GetEngineCurrent(3));
+
 
     ui->sliderEngine0w->setValue ( robot->GetEngineSpeed(0));
     ui->sliderEngine1w->setValue ( robot->GetEngineSpeed(1));

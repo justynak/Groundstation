@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QTcpSocket>
 
+enum STATE {BASIC, MINING, UNLOADING, AUTONOMY};
 
 class Robot : public IDiggingSystem, public IDrivingSystem
 {
@@ -39,24 +40,32 @@ class Robot : public IDiggingSystem, public IDrivingSystem
         double GetCylinderWeight(){return(m_cylinder.GetWeight()) ;}
         double GetBatteryCurrent(){return battery->GetCurrent();}
         double GetBatteryVoltage(){return battery->GetVoltage();}
-        double GetEngineCurrent(int i){return m_wheel[i].GetEngineCurrent();}
+        double GetEngineCurrent(int i){
+            if(i==1) return m_cylinder.GetCurrent();
+            //if(i==2) return m_arm.get
+            return m_wheel[i].GetEngineCurrent();
+        }
+
         double GetEngineSpeed(int i){return m_wheel[i].GetEngineSpeed();}
         double GetCylinderSpeed(){return m_cylinder.GetEngineSpeed();}
         double GetElectromagnet(){return m_cylinder.IsElectroMagnetOn();}
         double GetTensometer(){return tensometer[1];}
         void SetTensometer(double t){tensometer[1]=t;}
         double GetMass(){return m_cylinder.GetWeight();}
-        bool IsTeleoperated(){return teleoperated;}        
+        bool IsTeleoperated(){if(state!=AUTONOMY) return false; else return true;}
         void SetMaxCurrentVoltage(double U, double I);
         virtual ~Robot(){}
         char* ReceiveFrame(int id);
         void SendFrame(int id, int arg1, int arg2, int arg3);
 
+        STATE GetState(){return state;}
+        void SetState(STATE st){state=st;}
+
 private:
         QTcpSocket* socket;
         double tensometer[2];
         Battery* battery;
-        bool teleoperated;
+        STATE state;
 
 signals:
        ////BASIC SEQ.
@@ -84,6 +93,7 @@ signals:
         void _MiningDriving();                           //37
         void _MiningTensometerMass();                    //38
         void _MiningArmPosition1();                      //39
+        void _Mining_All_Launched();
 
         ///UNLOAD SEQ
         void _UnloadInitiate();                          //40
@@ -95,6 +105,7 @@ signals:
         void _UnloadCylinderRotate(double angle, double w);//46
         void _UnloadCylinderClose();                     //47
         void _UnloadArmPositionCheck();      //48    //position
+        void _UnloadAllLaunched();
 
         ///SECURITY SEQ
         void _SecurityAllEnginesStop();                  //101
@@ -130,6 +141,7 @@ public slots:
          void MiningDriving();                            //37
          void MiningTensometerMass();                     //38
          void MiningArmPosition1();                       //39
+         void MiningLaunchAll();
 
          ///UNLOAD SEQ
          void UnloadInitiate();                           //40
@@ -141,6 +153,7 @@ public slots:
          void UnloadCylinderRotate(double angle, double w);//46
          void UnloadCylinderClose();                      //47
          void UnloadArmPositionCheck();                   //48    ARG?
+         void UnloadLaunchAll();
 
          ///SECURITY SEQ
          void SecurityAllEnginesStop();                   //101
