@@ -43,7 +43,7 @@ class IDrivingSystem
 
     protected:
         ///assumption: driving wheels are  0 & 1 - 0 is left, 1 is right
-        Wheel m_wheel[4];
+        Wheel m_wheel[2];
         double md_linearVelocity;
         double md_angularVelocity;
         double md_wheelTrack;

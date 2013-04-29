@@ -77,58 +77,6 @@
      <string>Engines</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_EngineSteerRight">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>160</y>
-      <width>97</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>RIGHT</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_EngineSteerLeft">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>140</y>
-      <width>97</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>LEFT</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_EngineSteerArm">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>120</y>
-      <width>97</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ARM</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox_EngineSteerCylinder">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>100</y>
-      <width>97</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>CYLINDER</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="lineEdit_SteerEngineRight">
     <property name="geometry">
      <rect>
@@ -1598,6 +1546,58 @@
     </property>
     <property name="text">
      <string>AUTOMATED LAUNCH</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioEngineCylinder">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>100</y>
+      <width>116</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>CYLINDER</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioEngineArm">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>120</y>
+      <width>116</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ARM</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioEngineLeft">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>140</y>
+      <width>116</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LEFT</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioEngineRight">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>160</y>
+      <width>116</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RIGHT</string>
     </property>
    </widget>
   </widget>

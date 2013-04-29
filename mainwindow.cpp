@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     imgSmall.load(":/images/small.png");
 
     signalMapper = new QSignalMapper(this);
-    signalMapper->setMapping(ui->button_Mining_SetCylinderTo0, 1);
-    signalMapper->setMapping(ui->button_Unloading_SetCylinderTo0, 1);
+    signalMapper->setMapping(ui->button_Mining_SetCylinderTo0, 20);
+    signalMapper->setMapping(ui->button_Unloading_SetCylinderTo0, 20);
 
      this->setFocus();
 
@@ -49,10 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //disable checks
     ui->checkBox_ArchEngineLeft->setCheckable(false);
     ui->checkBox_ArchEngineRight->setCheckable(false);
-    ui->checkBox_EngineSteerArm->setCheckable(false);
-    ui->checkBox_EngineSteerCylinder->setCheckable(false);
-    ui->checkBox_EngineSteerLeft->setCheckable(false);
-    ui->checkBox_EngineSteerRight->setCheckable(false);
 
     ui->checkBox_Mining_ArmPosition4->setCheckable(false);
     ui->checkBox_Mining_CloseCylinder->setCheckable(false);
@@ -284,16 +280,16 @@ void MainWindow::BasicChangeValues(){
 }
 
 void MainWindow::BasicEngineSteer(){
-    if(ui->checkBox_EngineSteerRight->isChecked()){
+    if(ui->radioEngineRight->isChecked()){
          robot->BasicEngineSteer(4, ui->lineEdit_SteerEngineRight->text().toDouble());
         }
-    if(ui->checkBox_EngineSteerLeft->isChecked()){
+    if(ui->radioEngineLeft->isChecked()){
         robot->BasicEngineSteer(3, ui->lineEdit_EngineSteerLeft->text().toDouble());
     }
-    if(ui->checkBox_EngineSteerArm->isChecked()){
+    if(ui->radioEngineArm->isChecked()){
             robot->BasicEngineSteer(2, ui->lineEdit_EngineSteerArm->text().toDouble());
         }
-    if(ui->checkBox_EngineSteerCylinder->isChecked()){
+    if(ui->radioEngineCylinder->isChecked()){
         robot->BasicEngineSteer(1, ui->lineEdit_EngineSteerCylinder->text().toDouble());
     }
 }
@@ -356,10 +352,7 @@ void MainWindow::StartAll(){
 
     ui->checkBox_ArchEngineLeft->setCheckable(true);
     ui->checkBox_ArchEngineRight->setCheckable(true);
-    ui->checkBox_EngineSteerArm->setCheckable(true);
-    ui->checkBox_EngineSteerCylinder->setCheckable(true);
-    ui->checkBox_EngineSteerLeft->setCheckable(true);
-    ui->checkBox_EngineSteerRight->setCheckable(true);
+
 
 
 }                                 //20
