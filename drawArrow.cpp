@@ -46,7 +46,7 @@ void paintArrowSpeed(QPoint pt, double v, double sze, QPainter& painter){
 
 void paintLocation(double* point, double v, double sze, double a, QPixmap& pic, QPainter& painter){
     //QPainter painter(edit);
-    QPoint p(180-point[1]*20, 300-point[0]*20);
+    QPoint p(180-point[1]*30, 300-point[0]*30);
     QPoint r(p.rx()+30, p.ry()+30);
     painter.translate(QPoint(-94,-64));
     painter.translate(r);
