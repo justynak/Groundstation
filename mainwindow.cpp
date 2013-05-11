@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(ui->buttonQuit, SIGNAL(clicked()), this, SLOT(close()));
     imgUp.load(":/images/dol.png");
     imgSide.load(":/images/bok.png");
-    imgMap.load(":/images/map.png");
+    imgMap.load(":/images/lunarena2.png");
     imgSmall.load(":/images/small.png");
 
     signalMapper = new QSignalMapper(this);
@@ -163,11 +163,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     if(event->key()==Qt::Key_W){
         //ui->labelMap->setText(tr("aaa"));
         robot->BasicDriveForward(0.2, 0.2);
-        double *p = new double[3];
-        for(int i=0; i<3; ++i)
-            p[i]=robot->GetPosition()[i];
-
-        delete p;
 
     }
     if(event->key()==Qt::Key_D){
@@ -206,13 +201,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 void MainWindow::paintEvent(QPaintEvent *){
     QPixmap side(imgSide);
     QPainter painter(&side);
-    paintArrowSpeed(QPoint(310,100), robot->GetLinearVelocity(), 20, painter);
+    paintArrowSpeed(QPoint(120,240), robot->GetLinearVelocity(), 20, painter);
     painter.end();
-
-
     QPixmap map(imgMap);
     painter.begin(&map);
-    painter.drawPixmap(QPoint(350,350), imgSmall);
+    //painter.drawPixmap(QPoint(120,240), imgSmall);
+    //void paintLocation(double* point, double v, double sze, double a, QPixmap& pic, QPainter& painter){
     paintLocation(robot->GetPosition(), robot->GetLinearVelocity(), 7,robot->GetPosition()[2], imgSmall, painter);
     ui->labelMap->setPixmap(map);
     painter.end();

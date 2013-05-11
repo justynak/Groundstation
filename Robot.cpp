@@ -771,3 +771,38 @@ void Robot::SecurityAutonomy(){
      msgBox.setText("Not Connected");
      msgBox.exec();
  }
+
+ void Robot::FAILED_BasicEngineSteer(int i, double w) {}         //2 /////
+
+ void Robot::FAILED_BasicEngineDrivingSteer(int i, double w) {}  //3
+
+ void Robot::FAILED_BasicCylinderSetToZero(double w) {}          //4
+
+ void Robot::FAILED_BasicArmPositionChange(POSITION pos) {}      //5
+
+ void Robot::FAILED_BasicElectromagnetSet(bool on) {}            //6
+ void Robot::FAILED_BasicDriveForward(double v, double t) {}     //7
+ void Robot::FAILED_BasicTurn(double a, double t) {}             //8
+ void Robot::FAILED_BasicTurnArc(bool dir1, bool dir3, double w1, double w2) {} //9    ARG?
+ void Robot::FAILED_StartAll() {}                                //20
+ void Robot::FAILED_MiningInitiate() {}                          //30
+ void Robot::FAILED_MiningCylinderState(bool opened) {}          //31        ARG?
+ void Robot::FAILED_MiningArmPosition4() {}                      //32
+ void Robot::FAILED_MiningCylinderStart() {}                     //33
+ void Robot::FAILED_MiningCalibration()  {}                      //34
+ void Robot::FAILED_MiningCylinderToGround(double w) {}          //35
+ void Robot::FAILED_MiningPowerControl(double U, double I) {}    //36
+ void Robot::FAILED_MiningDriving() {}                           //37
+ void Robot::FAILED_MiningTensometerMass() {}                    //38
+ void Robot::FAILED_MiningArmPosition1() {}                      //39
+ void Robot::FAILED_Mining_Launch() {}
+ void Robot::FAILED_UnloadInitiate() {}                          //40
+ void Robot::FAILED_UnloadArmPosition1() {}                      //41
+ void Robot::FAILED_UnloadCylinderToZero(double w) {}            //42
+ void Robot::FAILED_UnloadCylinderOpen() {}                      //43
+ void Robot::FAILED_UnloadCylinderState(bool opened) {}             //44
+ void Robot::FAILED_UnloadCylinderShake() {}                     //45 HARLEM SHAKE LEL
+ void Robot::FAILED_UnloadCylinderRotate(double angle, double w) {}//46
+ void Robot::FAILED_UnloadCylinderClose() {}                     //47
+ void Robot::FAILED_UnloadArmPositionCheck() {}      //48    //position
+ void Robot::FAILED_UnloadAllLaunched() {}

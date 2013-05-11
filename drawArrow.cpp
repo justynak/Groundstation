@@ -27,7 +27,7 @@ void paintArrowSpeed(QPoint pt, double v, double sze, QPainter& painter){
     v*=100;
 
     QPoint ppt(pt.rx()+v, pt.ry());
-    QPoint t(pt.rx()+10, pt.ry()-10);
+    QPoint t(pt.rx()+20, pt.ry()-20);
 
     tangent =0*3.14/180;
     pa.setX(sze * cos (tangent + M_PI / 7) + pt.rx());
@@ -46,7 +46,7 @@ void paintArrowSpeed(QPoint pt, double v, double sze, QPainter& painter){
 
 void paintLocation(double* point, double v, double sze, double a, QPixmap& pic, QPainter& painter){
     //QPainter painter(edit);
-    QPoint p(490-point[1]*20, 332-point[0]*20);
+    QPoint p(180-point[1]*20, 300-point[0]*20);
     QPoint r(p.rx()+30, p.ry()+30);
     painter.translate(QPoint(-94,-64));
     painter.translate(r);
@@ -65,13 +65,15 @@ void paintLocation(double* point, double v, double sze, double a, QPixmap& pic, 
     pb.setX( -sze * cos (tangent + M_PI / 7) + ppt.rx());
     pb.setY( -sze * sin (tangent + M_PI / 7) + ppt.ry());
 
-    painter.setPen(QPen(Qt::blue, 1));
+    painter.setPen(QPen(Qt::white, 1));
     painter.drawLine(pa, p);
 
     painter.drawLine(pb,p);
     painter.drawLine(p,ppt);
-
-    painter.drawText(ppt, QString("[%1; %2; %3]").arg(point[0]).arg(point[1]).arg(point[2]));
+    QPoint P(p.rx()+v*20*sin(tangent)-8, p.ry()+v*20*cos(tangent)-5);
+    painter.setFont(QFont("Arial", 11, QFont::Bold));
+    //painter->setFont(QFont("Arial",11,QFont::AllLowercase));
+    painter.drawText(P, QString("[%1; %2; %3]").arg(point[0]).arg(point[1]).arg(point[2]));
 }
 
 void paintCylinderWeight(QPoint p, double w, QPainter& painter){
